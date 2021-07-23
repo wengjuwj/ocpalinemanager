@@ -39,48 +39,82 @@
         align="center"
         width="400px"
         >
+        <template slot-scope="{row}">
+          <span>{{ row.name }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="user_name"
         label="主播名称"
         align="center"
         >
+        <template slot-scope="{row}">
+          <span>{{ row.user_name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="telecase_time"
+        label="直播日期"
+        align="center"
+        >
+        <template slot-scope="{row}">
+          <span>{{ row.telecase_time }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="classification"
         label="分类"
         align="center"
         >
+        <template slot-scope="{row}">
+          <span>{{ row.classification }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="visitors_num"
         label="访问量"
         align="center"
        >
+       <template slot-scope="{row}">
+          <span>{{ row.visitors_num }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="visitors_multiple"
         label="访问倍数"
         align="center"
        >
+       <template slot-scope="{row}">
+          <span>{{ row.visitors_multiple }}</span>
+        </template>
       </el-table-column>
       <el-table-column
         prop="comment_num"
         label="评论数"
         align="center"
         >
+        <template slot-scope="{row}">
+          <span>{{ row.comment_num }}</span>
+        </template>
       </el-table-column>
-      <el-table-column label="Actions" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-button type="primary" size="mini" @click="handleUpdate(row)">
-            Edit
-          </el-button>
-          <el-button v-if="row.status!='published'" size="mini" type="success" @click="handleModifyStatus(row,'published')">
-            Publish
-          </el-button>
-          <el-button v-if="row.status!='deleted'" size="mini" type="danger" @click="handleDelete(row,$index)">
-            Delete
-          </el-button>
+          <el-tooltip content="编辑" placement="top" effect="light">
+             <el-button type="primary" icon="el-icon-edit" circle>
+             </el-button>
+          </el-tooltip>
+          <el-tooltip content="评论审核" placement="top" effect="light">
+             <el-button type="success" icon="el-icon-s-check" circle>
+             </el-button>
+          </el-tooltip>
+          <el-tooltip content="数据分析" placement="top" effect="light">
+             <el-button type="primary" icon="el-icon-s-data" circle>
+             </el-button>
+          </el-tooltip>
+          <el-tooltip content="删除" placement="top" effect="light">
+             <el-button type="danger" icon="el-icon-delete" circle>
+             </el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -102,7 +136,8 @@ export default {
           classification:"分类1",
           visitors_num:900,
           visitors_multiple:2,
-          comment_num:2000
+          comment_num:2000,
+          telecase_time:"2021-08-10 18:00"
         },{
           id: '2',
           name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
@@ -111,7 +146,8 @@ export default {
           classification:"分类1",
           visitors_num:900,
           visitors_multiple:2,
-          comment_num:2000
+          comment_num:2000,
+          telecase_time:"2021-08-10 18:00"
         }, {
           id: '3',
           name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
@@ -120,7 +156,8 @@ export default {
           classification:"分类1",
           visitors_num:900,
           visitors_multiple:2,
-          comment_num:2000
+          comment_num:2000,
+          telecase_time:"2021-08-10 18:00"
         }, {
           id: '4',
           name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
@@ -129,7 +166,8 @@ export default {
           classification:"分类1",
           visitors_num:900,
           visitors_multiple:2,
-          comment_num:2000
+          comment_num:2000,
+          telecase_time:"2021-08-10 18:00"
         }]
     }
   },
