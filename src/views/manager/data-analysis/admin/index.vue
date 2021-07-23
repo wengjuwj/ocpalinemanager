@@ -2,41 +2,55 @@
   <div class="dashboard-editor-container">
     <!-- <github-corner class="github-corner" /> -->
 
-    <panel-group @handleSetLineChartData="handleSetLineChartData" />
+    <!-- <panel-group @handleSetLineChartData="handleSetLineChartData" /> -->
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" />
+    <el-row style="margin-bottom:30px">
+      <el-card class="box-card">
+        <div slot="header" class="clearfix">
+          <span>观看时间曲线</span>
+          <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+        </div>
+        <div>
+          <line-chart :chart-data="lineChartData" />
+        </div>
+      </el-card>   
     </el-row>
 
     <el-row :gutter="32">
       <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <map-chart :chart-data="mapData" />
-        </div>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>热力地图</span>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <div>
+            <map-chart :chart-data="mapData" />
+          </div>
+        </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>数据统计（饼图）</span>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <div>
+            <pie-chart />
+          </div>
+        </el-card>
       </el-col>
       <el-col :xs="24" :sm="24" :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>数据统计（柱图）</span>
+            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+          </div>
+          <div>
+            <bar-chart />
+          </div>
+          </el-card>
       </el-col>
     </el-row>
-
-    <!-- <el-row :gutter="8">
-      <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 12}" :xl="{span: 12}" style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <todo-list />
-      </el-col>
-      <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 6}" :xl="{span: 6}" style="margin-bottom:30px;">
-        <box-card />
-      </el-col>
-    </el-row> -->
   </div>
 </template>
 

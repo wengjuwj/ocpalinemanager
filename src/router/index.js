@@ -84,14 +84,28 @@ export const constantRoutes = [
         path: 'livelist',
         component: () => import('@/views/manager/live-manager/liveList'),
         name: 'livelist',
-        meta: { title: '直播列表', icon: 'el-icon-s-unfold' }
+        meta: { title: '直播列表', icon: 'el-icon-s-unfold' },
       },
       {
         path: 'live',
         component: () => import('@/views/manager/live-manager/addLive'),
         name: 'live',
         meta: { title: '新建直播间', icon: 'el-icon-circle-plus-outline' }
-      }
+      },
+      {
+        path: 'comment',
+        component: () => import('@/views/manager/audits-management/comment'),
+        name: 'comment',
+        meta: { title: '评论审核', icon: 'el-icon-s-operation' },
+        hidden:true
+      },
+      {
+        path: 'analysis',
+        component: () => import('@/views/manager/data-analysis/index'),
+        name: 'comment',
+        meta: { title: '数据分析', icon: 'el-icon-s-operation' },
+        hidden:true
+      },
     ]
   },
   {
@@ -130,24 +144,6 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/commentmanager',
-    component: Layout,
-    redirect: '/commentmanager',
-    name: 'commentmanager',
-    meta: {
-      title: '审核管理',
-      icon: 'el-icon-setting'
-    },
-    children: [
-      {
-        path: 'commentmanager',
-        component: () => import('@/views/manager/audits-management/commentManager'),
-        name: 'commentmanager',
-        meta: { title: '评论审核', icon: 'el-icon-s-operation' }
-      }
-    ]
-  }
 ]
 
 /**
@@ -155,6 +151,30 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+  {
+    path: '/error',
+    component: Layout,
+    redirect: 'noRedirect',
+    name: 'ErrorPages',
+    meta: {
+      title: 'Error Pages',
+      icon: '404'
+    },
+    children: [
+      {
+        path: '401',
+        component: () => import('@/views/error-page/401'),
+        name: 'Page401',
+        meta: { title: '401', noCache: true }
+      },
+      {
+        path: '404',
+        component: () => import('@/views/error-page/404'),
+        name: 'Page404',
+        meta: { title: '404', noCache: true }
+      }
+    ]
+  },
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 
