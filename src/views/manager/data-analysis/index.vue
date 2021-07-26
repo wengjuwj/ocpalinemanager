@@ -23,6 +23,8 @@ export default {
     ])
   },
   created() {
+    const id = this.$route.params && this.$route.params.id
+    console.log('id', id)
     if (!this.roles.includes('admin')) {
       this.currentRole = 'editorDashboard'
     }

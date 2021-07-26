@@ -90,7 +90,8 @@ export const constantRoutes = [
         path: 'live',
         component: () => import('@/views/manager/live-manager/addLive'),
         name: 'live',
-        meta: { title: '新建直播间', icon: 'el-icon-circle-plus-outline' }
+        meta: { title: '新建直播间', icon: 'el-icon-circle-plus-outline' },
+        hidden:true
       },
       {
         path: 'comment',
@@ -102,7 +103,7 @@ export const constantRoutes = [
       {
         path: 'analysis',
         component: () => import('@/views/manager/data-analysis/index'),
-        name: 'comment',
+        name: 'analysis',
         meta: { title: '数据分析', icon: 'el-icon-s-operation' },
         hidden:true
       },
@@ -160,6 +161,7 @@ export const asyncRoutes = [
       title: 'Error Pages',
       icon: '404'
     },
+    hidden:true,
     children: [
       {
         path: '401',

@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-          <el-input placeholder="请输入直播间名称" style="width:200px" class="filter-item"/>
-          <el-input placeholder="请输入主播名称" style="width:200px" class="filter-item"/>
-          <el-select  placeholder="类别" clearable style="width: 150px" class="filter-item">
-            <el-option  label="1" value="1" />
+          <el-input placeholder="请输入直播间名称" style="width:200px" class="filter-item" v-model="listQuery.name"/>
+          <el-input placeholder="请输入主播名称" style="width:200px" class="filter-item" v-model="listQuery.user_name"/>
+          <el-select  placeholder="分类" clearable style="width: 150px" class="filter-item" v-model="listQuery.classification">
+            <el-option v-for="item in test" :key="item" :label="item" :value="item"/>
           </el-select>
-          <el-select  placeholder="状态" clearable style="width: 150px" class="filter-item">
-            <el-option  label="1" value="1" />
+          <el-select  placeholder="状态" clearable style="width: 150px" class="filter-item" v-model="listQuery.status">
+            <el-option v-for="item in test" :key="item" :label="item" :value="item" />
           </el-select>
-          <el-button  class="filter-item" type="primary" icon="el-icon-search" >
+          <el-button  class="filter-item" type="primary" icon="el-icon-search" @click="search">
             搜索
           </el-button>
     </div>
@@ -68,7 +68,7 @@
         width="200px"
         >
         <template slot-scope="{row}">
-          <span>{{ row.telecase_time }}</span>
+          <span>{{ row.telecase_time | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -131,7 +131,7 @@
              </el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" effect="light">
-             <el-button type="danger" icon="el-icon-delete" circle>
+             <el-button type="danger" icon="el-icon-delete" circle @click="handleDelete(row,$index)">
              </el-button>
           </el-tooltip>
         </template>
@@ -191,57 +191,14 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import { getLiveList,createLive,updateLive } from '@/api/manager'
+import { parseTime } from '@/utils'
 export default {
   name:'liveList',
   components:{Pagination},
   data(){
     return{
-       tableData: [
-        {
-          id: '1',
-          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          url:"xxx.xxx.xxx",
-          user_name:"主播1",
-          classification:"分类1",
-          status:"未开始",
-          visitors_num:900,
-          visitors_multiple:2,
-          comment_num:2000,
-          telecase_time:"2021-08-10 18:00"
-        },{
-          id: '2',
-          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          url:"xxx.xxx.xxx",
-          user_name:"主播1",
-          classification:"分类1",
-          status:"未开始",
-          visitors_num:900,
-          visitors_multiple:2,
-          comment_num:2000,
-          telecase_time:"2021-08-10 18:00"
-        }, {
-          id: '3',
-          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          url:"xxx.xxx.xxx",
-          user_name:"主播1",
-          classification:"分类1",
-          status:"已结束",
-          visitors_num:900,
-          visitors_multiple:2,
-          comment_num:2000,
-          telecase_time:"2021-08-10 18:00"
-        }, {
-          id: '4',
-          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          url:"xxx.xxx.xxx",
-          user_name:"主播1",
-          classification:"分类1",
-          status:"直播中",
-          visitors_num:900,
-          visitors_multiple:2,
-          comment_num:2000,
-          telecase_time:"2021-08-10 18:00"
-        }],
+       tableData: [],
         // 新建弹框
         dialogFormVisible:false,
         dialogStatus: '',
@@ -252,8 +209,8 @@ export default {
       //  
        rules: {
         name: [{ required: true, message: '请填写直播间名称', trigger: 'blur' }],
-        user_name: [{ type: 'date', required: true, message: '请填写主播名称', trigger: 'blur' }],
-        telecase_time: [{ required: true, message: '请选择直播时间', trigger: 'blur' }],
+        user_name: [{ required: true, message: '请填写主播名称', trigger: 'blur' }],
+        telecase_time: [{ required: true, message: '请选择直播时间', trigger: 'date' }],
         classification: [{ required: true, message: '请选择直播间分类', trigger: 'change' }]
       },
       temp: {
@@ -274,16 +231,17 @@ export default {
       total:100,
       listQuery: {
         page: 1,
-        limit: 20,
-        importance: undefined,
-        title: undefined,
-        type: undefined,
+        limit: 10,
+        name: undefined,
+        user_name: undefined,
+        classification: undefined,
+        status:undefined,
         sort: '+id'
       },
     }
   },
   created(){
-
+    this.getList()
   },
   watch:{
 
@@ -323,24 +281,89 @@ export default {
     },
     // 评论审核
     handleComment(row){
-      this.$router.push('/comment')
+      this.$router.push(
+        {
+          name:'comment',
+          params:{
+            id:row.id
+          }
+        }
+      )
     },
     // 数据分析
     handleAnalysis(row){
-      this.$router.push('/analysis')
+      this.$router.push(
+        {
+          name:'analysis',
+          params:{
+            id:row.id
+          }
+        }
+      )
     },
+    // 新增
     createData(){
-      this.dialogFormVisible=false;
+       this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
+          createLive(this.temp).then(() => {
+            this.tableData.unshift(this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Created Successfully',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
     },
+    // 编辑
     updateData(){
-      this.dialogFormVisible=false;
+     this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          const tempData = Object.assign({}, this.temp)
+          tempData.telecase_time = +new Date(tempData.telecase_time) // change Thu Nov 30 2017 16:41:05 GMT+0800 (CST) to 1512031311464
+          updateLive(tempData).then(() => {
+            const index = this.tableData.findIndex(v => v.id === this.temp.id)
+            this.tableData.splice(index, 1, this.temp)
+            this.dialogFormVisible = false
+            this.$notify({
+              title: 'Success',
+              message: 'Update Successfully',
+              type: 'success',
+              duration: 2000
+            })
+          })
+        }
+      })
+    },
+    // 删除
+    handleDelete(row, index) {
+      this.$notify({
+        title: 'Success',
+        message: 'Delete Successfully',
+        type: 'success',
+        duration: 2000
+      })
+      this.tableData.splice(index, 1)
     },
     // 表格复选
     handleSelectionChange(val){
       this.multipleSelection = val;
     },
     // 获取列表数据
-    getList(){}
+    getList(){
+      getLiveList(this.listQuery).then(response => {
+        this.tableData = response.data.data
+        this.total = response.data.total
+      })
+    },
+    // 搜索按钮点击
+    search(){
+      this.getList()
+    }
   }
 
 }
