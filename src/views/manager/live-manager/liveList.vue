@@ -250,7 +250,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: 1,
+        name: '',
         user_name: '',
         classification:'',
         telecase_time: new Date(),

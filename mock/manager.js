@@ -6,13 +6,15 @@ const ClassificationList=[];
 
 const count=100
 
+const liveArr=["慢性咳嗽与呼吸道感染诊治高峰论坛","上海麻醉医学发展专题片","智启梦想高校行大咖金句——王志萍教授","智启梦想高校行大咖金句——曾因明教授","智启梦想高校行大咖金句——董海龙教授"]
+
 for(let i=0;i<count;i++){
   List.push(
     Mock.mock(
       {
         id: i+1,
         timestamp: +Mock.Random.date('T'),
-        name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
+        name:liveArr[getRandom()],
         url:"xxx.xxx.xxx",
         user_name:"主播"+(i+1),
         classification:"分类"+(i+1),
@@ -49,9 +51,9 @@ module.exports = [
       const { name, user_name, classification,status, page = 1, limit = 20, sort } = config.query
 
       let mockList = List.filter(item => {
-        if (name && item.name !== +name) return false
+        if (name && item.name.indexOf(name) < 0) return false
         if (user_name && item.user_name !== user_name) return false
-        if (classification && item.classification.indexOf(classification) < 0) return false
+        if (classification && item.classification !== +classification) return false
         if (status && item.status !== status) return false
         return true
       })
@@ -144,4 +146,14 @@ module.exports = [
 function mockLevel(index){
  let test=index%3==0?1:2;
  return test;
+}
+function getRandom(){
+ 
+  let random=0;
+  let temp=Math.random()*10;
+  console.log(temp,"temp")
+  if(temp<5){
+    random=parseInt(temp)
+  }
+  return random
 }
