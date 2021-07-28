@@ -4,10 +4,16 @@ const List=[]
 
 const ClassificationList=[];
 
+const thumbsList=[]
+
+const commentrobotsList=[]
+
 const count=100
 
 const liveArr=["慢性咳嗽与呼吸道感染诊治高峰论坛","上海麻醉医学发展专题片","智启梦想高校行大咖金句——王志萍教授","智启梦想高校行大咖金句——曾因明教授","智启梦想高校行大咖金句——董海龙教授"]
 
+const commentArr=["讲的很好","受益匪浅","专业!!!","666!!!","很有帮助~"]
+// mock直播列表
 for(let i=0;i<count;i++){
   List.push(
     Mock.mock(
@@ -28,21 +34,47 @@ for(let i=0;i<count;i++){
     )
   )
 }
+// mock分类列表
 for(let i=0;i<count;i++){
   ClassificationList.push(
     Mock.mock(
       {
         id: i+1,
-        classification:mockLevel(i)==1?"1":"2",
-        classification_text:mockLevel(i)==1?"分类一":"分类二",
-        status:"1",
-        status_text:"启用",
+        classification:mockLevel(i)==1?("分类1"+i):("分类2"+i),
+        parent_status:mockLevel(i)==1?"1":"0",
         description:(mockLevel(i)==1?"分类一":"分类二")+"的说明",
-        classification_level:mockLevel(i)==1?"一级":"二级",
+        parent:mockLevel(i)==1?"我是有上级分类":"",
       }
     )
   )
 }
+// mock 点赞机器人列表
+for(let i=0;i<count;i++){
+  thumbsList.push(
+    Mock.mock(
+      {
+        id: i+1,
+        name:mockLevel(i)==1?("点赞机器人1"+i):("点赞机器人2"+i),
+        description:mockLevel(i)==1?("点赞机器人1"+i+"的描述"):("点赞机器人2"+i+"的描述"),
+      }
+    )
+  )
+}
+
+// mock 评论机器人列表
+for(let i=0;i<count;i++){
+  commentrobotsList.push(
+    Mock.mock(
+      {
+        id: i+1,
+        name:mockLevel(i)==1?("评论机器人1"+i):("评论机器人2"+i),
+        comment_text:commentArr[getRandom()],
+        description:mockLevel(i)==1?("评论机器人1"+i+"的描述"):("评论机器人2"+i+"的描述"),
+      }
+    )
+  )
+}
+
 module.exports = [
   {
     url: '/live/liveList',
@@ -65,7 +97,7 @@ module.exports = [
       const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
       return {
-        code: 20000,
+        code: 200,
         data: {
           total: mockList.length,
           data: pageList
@@ -78,7 +110,7 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }
@@ -88,7 +120,7 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }
@@ -113,7 +145,7 @@ module.exports = [
       const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
 
       return {
-        code: 20000,
+        code: 200,
         data: {
           total: mockList.length,
           data: pageList
@@ -126,7 +158,7 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
         data: 'success'
       }
     }
@@ -136,7 +168,99 @@ module.exports = [
     type: 'post',
     response: _ => {
       return {
-        code: 20000,
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/thumbs/list',
+    type: 'get',
+    response: config => {
+      const { name, page = 1, limit = 20, sort } = config.query
+
+      let mockList = thumbsList.filter(item => {
+        if (name && item.name.indexOf(name) < 0) return false
+        return true
+      })
+
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
+
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 200,
+        data: {
+          total: mockList.length,
+          data: pageList
+        }
+      }
+    }
+  },
+  {
+    url: '/thumbs/list/create',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/thumbs/list/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/commentrobots/list',
+    type: 'get',
+    response: config => {
+      const { name, page = 1, limit = 20, sort } = config.query
+
+      let mockList = commentrobotsList.filter(item => {
+        if (name && item.name.indexOf(name) < 0) return false
+        return true
+      })
+
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
+
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 200,
+        data: {
+          total: mockList.length,
+          data: pageList
+        }
+      }
+    }
+  },
+  {
+    url: '/commentrobots/list/create',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/commentrobots/list/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
         data: 'success'
       }
     }
@@ -151,7 +275,6 @@ function getRandom(){
  
   let random=0;
   let temp=Math.random()*10;
-  console.log(temp,"temp")
   if(temp<5){
     random=parseInt(temp)
   }

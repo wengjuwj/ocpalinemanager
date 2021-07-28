@@ -15,7 +15,7 @@
     </div>
     <!--  -->
     <div class="operation-container filter-container">
-      <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate"> 
+      <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleAdd"> 
             新建直播间
       </el-button>
       <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="multipleSelection.length==0"> 
@@ -80,7 +80,7 @@
           <span>{{ row.classification }}</span>
         </template>
       </el-table-column>
-      <el-table-column
+      <!-- <el-table-column
         prop="status"
         label="状态"
         align="center"
@@ -88,7 +88,7 @@
         <template slot-scope="{row}">
           <span>{{ row.status }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="visitors_num"
         label="访问量"
@@ -116,7 +116,7 @@
           <span>{{ row.comment_num }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
+      <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-tooltip content="编辑" placement="top" effect="light">
              <el-button type="primary" icon="el-icon-edit" circle @click="handleUpdate(row)">
@@ -128,6 +128,10 @@
           </el-tooltip>
           <el-tooltip content="数据分析" placement="top" effect="light">
              <el-button type="primary" icon="el-icon-s-data" circle @click="handleAnalysis(row)">
+             </el-button>
+          </el-tooltip>
+          <el-tooltip content="机器人配置" placement="top" effect="light">
+             <el-button  icon="el-icon-chat-line-square" circle @click="handleAnalysis(row)">
              </el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" effect="light">
@@ -268,6 +272,10 @@ export default {
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
+      
+    },
+    handleAdd(){
+      this.$router.push('/live')
     },
     // 编辑直播间
     handleUpdate(row){

@@ -138,11 +138,23 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: 'systemconfig',
-        component: () => import('@/views/manager/system-config/systemConfig'),
-        name: 'systemconfig',
-        meta: { title: '系统配置', icon: 'el-icon-s-operation' }
-      }
+        path: 'thumbsconfig',
+        component: () => import('@/views/manager/system-config/thumbsRobotConfig'),
+        name: 'thumbsconfig',
+        meta: { title: '点赞机器人配置', icon: 'el-icon-s-operation' }
+      },
+      {
+        path: 'commentconfig',
+        component: () => import('@/views/manager/system-config/commentRobotConfig'),
+        name: 'commentconfig',
+        meta: { title: '评论机器人配置', icon: 'el-icon-s-operation' }
+      },
+      {
+        path: 'complexconfig',
+        component: () => import('@/views/manager/system-config/complexConfig'),
+        name: 'complexconfig',
+        meta: { title: '组合配置', icon: 'el-icon-s-operation' }
+      },
     ]
   },
 ]

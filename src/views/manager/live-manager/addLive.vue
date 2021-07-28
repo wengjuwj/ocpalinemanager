@@ -1,25 +1,63 @@
 <template>
   <div class="app-container">
-    <div class="form-contain">
-        <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item label="直播名称">
-            <el-input v-model="form.name" />
-          </el-form-item>
-          <el-form-item label="直播分类">
-            <el-select v-model="form.region" placeholder="请选择分类">
-              <el-option label="分类一" value="分类一" />
-              <el-option label="分类二" value="分类一" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="直播时间">
-            <el-col :span="11">
-              <el-date-picker v-model="form.date1" type="date" placeholder="选择日期" style="width: 100%;" />
+
+        <el-form ref="form" :model="form" label-width="120px">
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="直播名称">
+                <el-input v-model="form.name" />
+              </el-form-item>
             </el-col>
-            <el-col class="line" :span="2">-</el-col>
-            <el-col :span="11">
-              <el-time-picker v-model="form.date2" placeholder="选择时间" style="width: 100%;" />
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="主播名称" prop="user_name">
+                <el-input v-model="form.user_name" />
+              </el-form-item>
             </el-col>
-          </el-form-item>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="直播时间" prop="telecase_time">
+                <el-date-picker v-model="form.telecase_time" type="datetime" placeholder="Please pick a date" style="width:100%"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+           <el-row>
+            <el-col :span="24">
+               <el-form-item label="直播分类">
+                  <el-select v-model="form.classification" placeholder="请选择分类" style="width:100%">
+                    <el-option label="分类一" value="分类一" />
+                    <el-option label="分类二" value="分类一" />
+                  </el-select>
+                </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+               <el-form-item label="直播封面">
+                  
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="互动配置">
+                <el-select v-model="form.visitors_setting" class="filter-item" placeholder="Please select" style="width:100%">
+                  <el-option v-for="item in test" :key="item" :label="item" :value="item" />
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="推流/拉流地址">
+                <el-input v-model="form.url" disabled/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          
+        
           <!-- <el-form-item label="即时配送">
               <el-switch v-model="form.delivery"></el-switch>
             </el-form-item> -->
@@ -45,7 +83,6 @@
             <el-button>取消</el-button>
           </el-form-item>
         </el-form>
-    </div>
     
   </div>
 </template>
@@ -63,24 +100,45 @@ export default {
         type: [],
         resource: '',
         desc: ''
-      }
+      },
+      
     }
   },
   methods: {
     onSubmit() {
       console.log('submit!')
-    }
+    },
+
   }
 }
 </script>
 <style lang="scss" scoped>
-    .form-contain{
-      width:80%;
-      border: 1px solid #ebebeb;
-      margin:20px auto;
-      .el-form{
-        width: 80%;
-        margin: 20px auto; 
-      }
-    }
+.el-form{
+  .el-row{
+    width: 600px;
+  }
+}
+.avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9 !important;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
 </style>

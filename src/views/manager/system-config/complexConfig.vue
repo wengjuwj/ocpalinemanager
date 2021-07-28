@@ -1,15 +1,15 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-          <el-input placeholder="请输入分类名称" style="width:200px" class="filter-item" v-model="listQuery.classification"/>
-          <el-button  class="filter-item" type="primary" icon="el-icon-search" @click="search">
+          <el-input placeholder="请输入点赞机器人名称" style="width:200px" class="filter-item"/>
+          <el-button  class="filter-item" type="primary" icon="el-icon-search" >
             搜索
           </el-button>
     </div>
     <!--  -->
     <div class="operation-container filter-container">
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate"> 
-            新建分类
+            新建点赞机器人
       </el-button>
       <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="multipleSelection.length==0"> 
             删除
@@ -36,43 +36,21 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="classification"
-        label="分类名称"
-        align="center"
-        width="400px"
-        >
-        <template slot-scope="{row}">
-          <span>{{ row.classification }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="parent_status"
-        label="上级分类（有/无）"
+        prop="name"
+        label="点赞机器人名称"
         align="center"
         >
         <template slot-scope="{row}">
-          <span v-if="row.parent_status==1">有</span>
-          <span v-if="row.parent_status==0">无</span>
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="parent"
-        label="上级分类名称"
-        align="center"
-        width="200px"
-        >
-        <template slot-scope="{row}">
-          <span>{{ row.parent}}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
       <el-table-column
         prop="description"
-        label="分类描述"
+        label="描述"
         align="center"
-        width="200px"
         >
         <template slot-scope="{row}">
-          <span>{{ row.description}}</span>
+          <span>{{ row.description }}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
@@ -90,25 +68,13 @@
     </el-table>
     <!-- 分页 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" style="margin-top:0;"/>
-    <!-- 新建-编辑直播间信息 弹框 -->
+    <!-- 新建-编辑点赞机器人信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="分类名称" prop="classification">
-          <el-input v-model="temp.classification" />
+        <el-form-item label="点赞机器人名称" prop="name">
+          <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item label="上级分类" prop="parent_status">
-          <el-radio-group v-model="temp.parent_status">
-            <el-radio label="1" value="1">有</el-radio>
-            <el-radio label="0" value="0">无</el-radio>
-          </el-radio-group>
-          
-        </el-form-item>
-         <el-form-item label="上级分类名称" prop="parent" v-if="temp.parent_status==1">
-          <el-select v-model="temp.parent" class="filter-item" placeholder="Please select" style="width:100%">
-            <el-option v-for="item in test" :key="item" :label="item" :value="item" />
-          </el-select>
-        </el-form-item>
-        <el-form-item label="分类描述">
+        <el-form-item label="描述">
           <el-input v-model="temp.description" />
         </el-form-item>
       </el-form>
@@ -127,14 +93,31 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getClassificationList,createClassification,updateClassification } from '@/api/manager'
+import { getThumbsList,createThumbs,updateThumbs } from '@/api/manager'
 import { parseTime } from '@/utils'
 export default {
-  name:'liveList',
+  name:'thumbs',
   components:{Pagination},
   data(){
     return{
-       tableData: [],
+       tableData: [
+        {
+          id: '1',
+          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
+          description:''
+        },{
+          id: '2',
+          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
+          description:''
+        }, {
+          id: '3',
+          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
+          description:''
+        }, {
+          id: '4',
+          name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
+          description:''
+        }],
         // 新建弹框
         dialogFormVisible:false,
         dialogStatus: '',
@@ -144,16 +127,12 @@ export default {
        },
       //  
        rules: {
-        classification: [{ required: true, message: '请填写分类名称', trigger: 'change' }],
-        parent_status:[{ required: true, message: '请选择是否有上级分类', trigger: 'change' }],
-        parent:[{ required: true, message: '请选择上级分类名称', trigger: 'change' }]
+        name: [{ required: true, message: '请填写点赞机器人名称', trigger: 'blur' }],
       },
       temp: {
         id: undefined,
-        classification: '',
-        parent_status:'',
-        parent:'',
-        description:'',
+        name: '',
+        description: ''
       },
       test:[1,2,3,4],
       multipleSelection:[],
@@ -161,13 +140,13 @@ export default {
       listQuery: {
         page: 1,
         limit: 10,
-        classification: undefined,
+        name:undefined,
         sort: '+id'
       },
     }
   },
   created(){
-    this.getList()
+    this.getList();
   },
   watch:{
 
@@ -176,13 +155,11 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        classification: '',
-        parent_status:'',
-        parent:'',
-        description:'',
+        name: '',
+        description: ''
       }
     },
-    // 新建分类
+    // 新建点赞机器人
     handleCreate(){
       this.resetTemp()
       this.dialogStatus = 'create'
@@ -191,26 +168,22 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    // 编辑分类
+    // 编辑点赞机器人
     handleUpdate(row){
       this.temp = Object.assign({}, row) // copy obj
-      this.temp.telecase_time = new Date(this.temp.telecase_time)
       this.dialogStatus = 'update'
       this.dialogFormVisible = true
       this.$nextTick(() => {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    // 新增
     createData(){
        this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          if(this.temp.parent_status=='0'){
-            this.temp.parent=""
-          }
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          createClassification(this.temp).then(() => {
-            this.tableData.unshift(this.temp)
+          const tempData = Object.assign({}, this.temp)
+          createThumbs(tempData).then(() => {
+             this.tableData.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
               title: 'Success',
@@ -222,15 +195,11 @@ export default {
         }
       })
     },
-    // 编辑
     updateData(){
-     this.$refs['dataForm'].validate((valid) => {
+      this.$refs['dataForm'].validate((valid) => {
         if (valid) {
-          if(this.temp.parent_status=='0'){
-            this.temp.parent=""
-          }
           const tempData = Object.assign({}, this.temp)
-          updateClassification(tempData).then(() => {
+          updateThumbs(tempData).then(() => {
             const index = this.tableData.findIndex(v => v.id === this.temp.id)
             this.tableData.splice(index, 1, this.temp)
             this.dialogFormVisible = false
@@ -260,15 +229,11 @@ export default {
     },
     // 获取列表数据
     getList(){
-      getClassificationList(this.listQuery).then(response => {
+      getThumbsList(this.listQuery).then(response => {
         this.tableData = response.data.data
         this.total = response.data.total
       })
     },
-    // 搜索按钮点击
-    search(){
-      this.getList()
-    }
   }
 
 }
