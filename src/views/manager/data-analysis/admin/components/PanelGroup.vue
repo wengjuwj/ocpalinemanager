@@ -3,11 +3,12 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('newVisitis')">
         <div class="card-panel-icon-wrapper icon-component">
-          <svg-icon icon-class="component" class-name="card-panel-icon" />
+          <svg-icon icon-class="peoples" class-name="card-panel-icon"/>
+          <!-- <svg-icon icon-class="component"  /> -->
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            直播总数
+            当前访问量
           </div>
           <count-to :start-val="0" :end-val="1000" :duration="2600" class="card-panel-num" />
         </div>
@@ -16,30 +17,31 @@
     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('messages')">
         <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="message" class-name="card-panel-icon" />
+          <svg-icon icon-class="user" class-name="card-panel-icon"/>
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            正在直播
+            当前观看人数
           </div>
           <count-to :start-val="0" :end-val="200" :duration="200" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+     <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('purchases')">
         <div class="card-panel-icon-wrapper icon-guide">
-          <svg-icon icon-class="guide" class-name="card-panel-icon" />
+          <svg-icon icon-class="size" class-name="card-panel-icon"/>
+          <!-- <svg-icon icon-class="guide"  /> -->
         </div>
         <div class="card-panel-description">
           <div class="card-panel-text">
-            未开始
+            当前访问倍数
           </div>
-          <count-to :start-val="0" :end-val="300" :duration="300" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="2" :duration="2" class="card-panel-num" />
         </div>
       </div>
     </el-col>
-    <el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
+    <!--<el-col :xs="12" :sm="12" :lg="6" class="card-panel-col">
       <div class="card-panel" @click="handleSetLineChartData('shoppings')">
         <div class="card-panel-icon-wrapper icon-lock">
           <svg-icon icon-class="lock" class-name="card-panel-icon" />
@@ -51,7 +53,7 @@
           <count-to :start-val="0" :end-val="500" :duration="3600" class="card-panel-num" />
         </div>
       </div>
-    </el-col>
+    </el-col> -->
   </el-row>
 </template>
 

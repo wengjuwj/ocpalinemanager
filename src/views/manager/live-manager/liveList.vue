@@ -3,10 +3,10 @@
     <div class="filter-container">
           <el-input placeholder="请输入直播间名称" style="width:200px" class="filter-item" v-model="listQuery.name"/>
           <el-input placeholder="请输入主播名称" style="width:200px" class="filter-item" v-model="listQuery.user_name"/>
-          <el-select  placeholder="分类" clearable style="width: 150px" class="filter-item" v-model="listQuery.classification">
+          <el-select  placeholder="请选择分类" clearable style="width: 150px" class="filter-item" v-model="listQuery.classification">
             <el-option v-for="item in test" :key="item" :label="item" :value="item"/>
           </el-select>
-          <el-select  placeholder="状态" clearable style="width: 150px" class="filter-item" v-model="listQuery.status">
+          <el-select  placeholder="请选择状态" clearable style="width: 150px" class="filter-item" v-model="listQuery.status">
             <el-option v-for="item in test" :key="item" :label="item" :value="item" />
           </el-select>
           <el-button  class="filter-item" type="primary" icon="el-icon-search" @click="search">
@@ -119,7 +119,7 @@
       <el-table-column label="操作" align="center" width="300" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
           <el-tooltip content="编辑" placement="top" effect="light">
-             <el-button type="primary" icon="el-icon-edit" circle @click="handleUpdate(row)">
+             <el-button type="primary" icon="el-icon-edit" circle @click="handleAdd(row)">
              </el-button>
           </el-tooltip>
           <el-tooltip content="评论审核" placement="top" effect="light">
@@ -131,7 +131,7 @@
              </el-button>
           </el-tooltip>
           <el-tooltip content="机器人配置" placement="top" effect="light">
-             <el-button  icon="el-icon-chat-line-square" circle @click="handleAnalysis(row)">
+             <el-button  icon="el-icon-chat-line-square" circle @click="handleSetRobotConfig(row)">
              </el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" effect="light">
@@ -153,10 +153,10 @@
           <el-input v-model="temp.user_name" />
         </el-form-item>
         <el-form-item label="直播时间" prop="telecase_time">
-          <el-date-picker v-model="temp.telecase_time" type="datetime" placeholder="Please pick a date" style="width:100%"/>
+          <el-date-picker v-model="temp.telecase_time" type="datetime" placeholder="请选择日期" style="width:100%"/>
         </el-form-item>
         <el-form-item label="分类" prop="classification">
-          <el-select v-model="temp.classification" class="filter-item" placeholder="Please select" style="width:100%">
+          <el-select v-model="temp.classification" class="filter-item" placeholder="请选择分类" style="width:100%">
             <el-option v-for="item in test" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
@@ -172,7 +172,7 @@
           <el-input v-model="temp.visitors_multiple" />
         </el-form-item>
         <el-form-item label="互动配置">
-          <el-select v-model="temp.visitors_setting" class="filter-item" placeholder="Please select" style="width:100%">
+          <el-select v-model="temp.visitors_setting" class="filter-item" placeholder="请选择互动配置" style="width:100%">
             <el-option v-for="item in test" :key="item" :label="item" :value="item" />
           </el-select>
         </el-form-item>
@@ -185,6 +185,35 @@
           取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+    <!-- 选择机器人配置 -->
+    <el-dialog title="机器人配置" :visible.sync="dialogRobotVisible">
+      <el-form ref="robotForm" :rules="rules" :model="dialogRobotForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="配置机器人">
+          <el-select
+              v-model="dialogRobotForm.robot_config"
+              multiple
+              collapse-tags
+              placeholder="请选择评论机器人组合"
+              style="width: 100%" 
+              >
+              <el-option
+                v-for="item in test"
+                :key="item"
+                :label="item"
+                :value="item">
+              </el-option>
+            </el-select>
+          </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogRobotVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="setRobotConfig">
           确定
         </el-button>
       </div>
@@ -242,6 +271,12 @@ export default {
         status:undefined,
         sort: '+id'
       },
+      // 配置机器人弹框
+      dialogRobotVisible:false,
+      dialogRobotForm:{
+        id:undefined,
+        robot_config:''
+      }
     }
   },
   created(){
@@ -274,8 +309,15 @@ export default {
       })
       
     },
-    handleAdd(){
-      this.$router.push('/live')
+    handleAdd(row){
+      this.$router.push(
+        {
+          name:'live',
+          params:{
+            id:row.id
+          }
+        }
+      )
     },
     // 编辑直播间
     handleUpdate(row){
@@ -308,6 +350,11 @@ export default {
           }
         }
       )
+    },
+    // 机器人配置
+    handleSetRobotConfig(row){
+      this.dialogRobotForm.id=row.id;
+      this.dialogRobotVisible=true
     },
     // 新增
     createData(){
@@ -371,6 +418,10 @@ export default {
     // 搜索按钮点击
     search(){
       this.getList()
+    },
+    // 配置机器人相关
+    setRobotConfig(){
+      this.dialogRobotVisible=false
     }
   }
 

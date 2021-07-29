@@ -19,7 +19,7 @@
           <el-row>
             <el-col :span="24">
               <el-form-item label="直播时间" prop="telecase_time">
-                <el-date-picker v-model="form.telecase_time" type="datetime" placeholder="Please pick a date" style="width:100%"/>
+                <el-date-picker v-model="form.telecase_time" type="datetime" placeholder="请选择直播时间" style="width:100%"/>
               </el-form-item>
             </el-col>
           </el-row>
@@ -36,11 +36,18 @@
           <el-row>
             <el-col :span="24">
                <el-form-item label="直播封面">
-                  
+                  <uploadImg></uploadImg>
               </el-form-item>
             </el-col>
           </el-row>
           <el-row>
+            <el-col :span="24">
+               <el-form-item label="详细介绍图">
+                  <uploadImg></uploadImg>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <!-- <el-row>
             <el-col :span="24">
               <el-form-item label="互动配置">
                 <el-select v-model="form.visitors_setting" class="filter-item" placeholder="Please select" style="width:100%">
@@ -48,7 +55,7 @@
                 </el-select>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row>
             <el-col :span="24">
               <el-form-item label="推流/拉流地址">
@@ -80,7 +87,7 @@
             </el-form-item> -->
           <el-form-item>
             <el-button type="primary" @click="onSubmit">立即创建</el-button>
-            <el-button>取消</el-button>
+            <!-- <el-button>取消</el-button> -->
           </el-form-item>
         </el-form>
     
@@ -88,6 +95,7 @@
 </template>
 
 <script>
+import uploadImg from '../components/uploadImg'
 export default {
   data() {
     return {
@@ -102,6 +110,15 @@ export default {
         desc: ''
       },
       
+    }
+  },
+  components:{
+    uploadImg
+  },
+  created(){
+    let id=this.$route.params && this.$route.params.id
+    if(id){
+      document.title="编辑直播间"
     }
   },
   methods: {

@@ -96,3 +96,28 @@ export function updateCommentRobots(data) {
     data
   })
 }
+// 获取机器人组合列表
+export function getRobotGroupList(query) {
+  return request({
+    url: '/robotgroup/list',
+    method: 'get',
+    params: query
+  })
+}
+// 创建评论机器人
+export function createRobotGroup(data){
+  return request({
+    url:'/robotgroup/list/create',
+    method: 'post',
+    data
+  })
+}
+// 编辑评论机器人
+export function updateRobotGroup(data) {
+  return request({
+    url: '/robotgroup/list/update',
+    method: 'post',
+    data
+  })
+}
+

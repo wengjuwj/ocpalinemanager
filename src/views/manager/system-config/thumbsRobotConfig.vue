@@ -72,10 +72,14 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="点赞机器人名称" prop="name">
-          <el-input v-model="temp.name" />
+          <el-col :span="24">
+            <el-input v-model="temp.name" />
+          </el-col>
         </el-form-item>
         <el-form-item label="描述">
-          <el-input v-model="temp.description" />
+          <el-col :span="24">
+            <el-input v-model="temp.description" />
+          </el-col>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

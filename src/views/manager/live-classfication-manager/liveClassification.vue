@@ -94,22 +94,30 @@
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="分类名称" prop="classification">
+          <el-col :span="24">
+             
+          </el-col>
           <el-input v-model="temp.classification" />
         </el-form-item>
         <el-form-item label="上级分类" prop="parent_status">
-          <el-radio-group v-model="temp.parent_status">
-            <el-radio label="1" value="1">有</el-radio>
-            <el-radio label="0" value="0">无</el-radio>
-          </el-radio-group>
-          
+          <el-col :span="24">
+              <el-radio-group v-model="temp.parent_status">
+                <el-radio label="1" value="1">有</el-radio>
+                <el-radio label="0" value="0">无</el-radio>
+              </el-radio-group>
+          </el-col>  
         </el-form-item>
          <el-form-item label="上级分类名称" prop="parent" v-if="temp.parent_status==1">
-          <el-select v-model="temp.parent" class="filter-item" placeholder="Please select" style="width:100%">
-            <el-option v-for="item in test" :key="item" :label="item" :value="item" />
-          </el-select>
+            <el-col :span="24">
+                <el-select v-model="temp.parent" class="filter-item" placeholder="Please select" style="width:100%">
+                    <el-option v-for="item in test" :key="item" :label="item" :value="item" />
+                </el-select>
+          </el-col>
         </el-form-item>
         <el-form-item label="分类描述">
-          <el-input v-model="temp.description" />
+           <el-col :span="24">
+             <el-input v-model="temp.description" />
+          </el-col>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">

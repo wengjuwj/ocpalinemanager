@@ -8,6 +8,8 @@ const thumbsList=[]
 
 const commentrobotsList=[]
 
+const robotgroupList=[]
+
 const count=100
 
 const liveArr=["慢性咳嗽与呼吸道感染诊治高峰论坛","上海麻醉医学发展专题片","智启梦想高校行大咖金句——王志萍教授","智启梦想高校行大咖金句——曾因明教授","智启梦想高校行大咖金句——董海龙教授"]
@@ -70,6 +72,25 @@ for(let i=0;i<count;i++){
         name:mockLevel(i)==1?("评论机器人1"+i):("评论机器人2"+i),
         comment_text:commentArr[getRandom()],
         description:mockLevel(i)==1?("评论机器人1"+i+"的描述"):("评论机器人2"+i+"的描述"),
+      }
+    )
+  )
+}
+
+// mock 机器人组合列表
+for(let i=0;i<count;i++){
+  robotgroupList.push(
+    Mock.mock(
+      {
+        id: i+1,
+        robots_group_name: 'fff',
+        thumbs_group_name:[1,2],
+        thumbs_space_time:20,
+        thumbs_time_unit:1,
+        comments_group_name:[1,2],
+        comments_space_time:10,
+        comments_time_unit:1,
+        robots_group_description:'',
       }
     )
   )
@@ -257,6 +278,52 @@ module.exports = [
   },
   {
     url: '/commentrobots/list/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/robotgroup/list',
+    type: 'get',
+    response: config => {
+      const { robots_group_name, page = 1, limit = 20, sort } = config.query
+
+      let mockList = robotgroupList.filter(item => {
+        if (robots_group_name && item.robots_group_name.indexOf(robots_group_name) < 0) return false
+        return true
+      })
+
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
+
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 200,
+        data: {
+          total: mockList.length,
+          data: pageList
+        }
+      }
+    }
+  },
+  {
+    url: '/robotgroup/list/create',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/robotgroup/list/update',
     type: 'post',
     response: _ => {
       return {
