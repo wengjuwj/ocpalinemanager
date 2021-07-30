@@ -220,7 +220,15 @@ export default {
       dialogMultipleForm:{
         multiple:''
       },
+      query:{
+        id:''
+      }
     }
+  },
+  created(){
+    this.query.id=this.$route.query && this.$route.query.id
+    console.log(this.query.id, 'this.querythis.query')
+    this.getMapDataaa();
   },
   methods: {
     // reset visitorsForm data
@@ -233,9 +241,10 @@ export default {
       this.lineChartData = lineChartData[type]
     },
     // api连接
-    getMapData() {
-      getMapData().then(response => {
-        console.log('这是mock的数据')
+    getMapDataaa() {
+      getMapData(this.query).then(response => {
+        this.mapData=response.data.data
+        console.log(this.mapData, 'this.mapDatamapDatamapData')
       })
     }
   }

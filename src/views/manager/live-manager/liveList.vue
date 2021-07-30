@@ -312,8 +312,8 @@ export default {
     handleAdd(row){
       this.$router.push(
         {
-          name:'live',
-          params:{
+          path:'/live',
+          query:{
             id:row.id
           }
         }
@@ -333,8 +333,8 @@ export default {
     handleComment(row){
       this.$router.push(
         {
-          name:'comment',
-          params:{
+          path:'/comment',
+          query:{
             id:row.id
           }
         }
@@ -344,8 +344,8 @@ export default {
     handleAnalysis(row){
       this.$router.push(
         {
-          name:'analysis',
-          params:{
+          path:'/analysis',
+          query:{
             id:row.id
           }
         }
