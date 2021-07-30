@@ -1,5 +1,5 @@
 <template>
-  <div :class="className" />
+  <div :class="className" :style="{height:height,width:width}" />
 </template>
 
 <script>
@@ -26,30 +26,85 @@ export default {
       default: true
     },
     chartData: {
-      type: Object,
+      type: Array,
       required: true
     }
   },
   data() {
     return {
-      chart: null
+      chart: null,
     }
   },
   watch: {
     chartData: {
       deep: true,
       handler(val) {
-
+        this.setOptions(val)
       }
     }
+  },
+    mounted() {
+    this.$nextTick(() => {
+      this.initChart()
+    })
+  },
+  beforeDestroy() {
+    if (!this.chart) {
+      return
+    }
+    this.chart.dispose()
+    this.chart = null
   },
   methods: {
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions(expectedData) {
+      let xData=[];
+      let yData=[];
+      expectedData.map(function (item,index) {
+              if(index<24){
+                let tempString=''
+                  if(index<10){
+                    tempString='0'+index+':00'
+                  }else{
+                    tempString=index+':00'
+                  }
+                xData.push(tempString)
+              }
+           });
+      expectedData.map(function (item,index1) {
+            if(index1<24){
+              yData.push(item[1]);
+            }
+          });
       this.chart.setOption({
-
+         // Make gradient line here
+          visualMap: [{
+              show: false,
+              type: 'continuous',
+              seriesIndex: 0,
+              min: 0,
+              max: 400
+          }],
+          title: [{
+              left: 'center',
+              text: ''
+          }],
+          tooltip: {
+              trigger: 'axis'
+          },
+          xAxis: [{
+              data:xData
+          }],
+          yAxis: [{
+          }],
+          series: [{
+              type: 'line',
+              showSymbol: false,
+              data: yData
+          }]
       })
     }
   }
