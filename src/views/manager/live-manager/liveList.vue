@@ -54,7 +54,7 @@
       </el-table-column>
       <el-table-column
         prop="user_name"
-        label="主播名称"
+        label="主讲人"
         align="center"
         >
         <template slot-scope="{row}">
@@ -89,7 +89,7 @@
           <span>{{ row.status }}</span>
         </template>
       </el-table-column> -->
-      <el-table-column
+      <!-- <el-table-column
         prop="visitors_num"
         label="访问量"
         align="center"
@@ -106,7 +106,7 @@
        <template slot-scope="{row}">
           <span>{{ row.visitors_multiple }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column
         prop="comment_num"
         label="评论数"
@@ -149,7 +149,7 @@
         <el-form-item label="直播间名称" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item label="主播名称" prop="user_name">
+        <el-form-item label="主讲人" prop="user_name">
           <el-input v-model="temp.user_name" />
         </el-form-item>
         <el-form-item label="直播时间" prop="telecase_time">

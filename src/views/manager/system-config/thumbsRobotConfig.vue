@@ -76,6 +76,11 @@
             <el-input v-model="temp.name" />
           </el-col>
         </el-form-item>
+         <el-form-item label="点赞机器人头像">
+          <el-col :span="24">
+           <uploadImg></uploadImg>
+          </el-col>
+        </el-form-item>
         <el-form-item label="描述">
           <el-col :span="24">
             <el-input v-model="temp.description" />
@@ -99,9 +104,10 @@
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
 import { getThumbsList,createThumbs,updateThumbs } from '@/api/manager'
 import { parseTime } from '@/utils'
+import uploadImg from '../components/uploadImg'
 export default {
   name:'thumbs',
-  components:{Pagination},
+  components:{Pagination,uploadImg},
   data(){
     return{
        tableData: [

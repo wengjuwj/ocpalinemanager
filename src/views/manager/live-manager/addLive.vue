@@ -11,7 +11,7 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-form-item label="主播名称" prop="user_name">
+              <el-form-item label="主讲人名称" prop="user_name">
                 <el-input v-model="form.user_name" />
               </el-form-item>
             </el-col>
@@ -42,8 +42,8 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-               <el-form-item label="详细介绍图">
-                  <uploadImg></uploadImg>
+               <el-form-item label="详情介绍">
+                  <tinymce v-model="content"></tinymce>
               </el-form-item>
             </el-col>
           </el-row>
@@ -96,6 +96,7 @@
 
 <script>
 import uploadImg from '../components/uploadImg'
+import tinymce from '../../../components/Tinymce'
 export default {
   data() {
     return {
@@ -109,11 +110,12 @@ export default {
         resource: '',
         desc: ''
       },
-      
+      content:''
     }
   },
   components:{
-    uploadImg
+    uploadImg,
+    tinymce
   },
   created(){
     let id=this.$route.params && this.$route.params.id
@@ -124,6 +126,7 @@ export default {
   methods: {
     onSubmit() {
       console.log('submit!')
+      console.log('富文本编辑器', this.content)
     },
 
   }
@@ -132,7 +135,7 @@ export default {
 <style lang="scss" scoped>
 .el-form{
   .el-row{
-    width: 600px;
+    width: 700px;
   }
 }
 .avatar-uploader .el-upload {

@@ -90,6 +90,10 @@
              <el-button type="warning" icon="el-icon-close" circle>
              </el-button>
           </el-tooltip>
+          <el-tooltip content="回复" placement="top" effect="light">
+             <el-button  icon="el-icon-chat-line-square" circle @click="dialogFormVisible=true">
+             </el-button>
+          </el-tooltip>
           <el-tooltip content="删除" placement="top" effect="light">
              <el-button type="danger" icon="el-icon-delete" circle>
              </el-button>
@@ -99,6 +103,21 @@
     </el-table>
     <!-- 分页 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" style="margin-top:0;"/>
+        <el-dialog title="回复" :visible.sync="dialogFormVisible">
+          <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
+            <el-form-item label="回复" prop="text">
+              <el-input v-model="temp.text" />
+            </el-form-item>
+          </el-form>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="dialogFormVisible=false">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
   </div>
 </template>
 
@@ -145,6 +164,14 @@ export default {
         title: undefined,
         type: undefined,
         sort: '+id'
+      },
+      dialogFormVisible:false,
+      rules: {
+        text: [{ required: true, message: '请填写回复内容', trigger: 'blur' }],
+      },
+      temp: {
+        id: undefined,
+        text: "",
       },
     }
   },

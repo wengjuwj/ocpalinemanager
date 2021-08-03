@@ -116,29 +116,14 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" style="margin-top:0;"/>
     <!-- 新建-编辑点赞机器人信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
-      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 600px; margin-left:50px;">
+      <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
         <el-form-item label="机器人组合名称" prop="robots_group_name">
           <el-col :span="14">
              <el-input v-model="temp.robots_group_name" />
           </el-col>
         </el-form-item>
         <el-form-item label="点赞组合">
-          <el-col :span="14">
-              <el-select
-                v-model="temp.thumbs_group_name"
-                multiple
-                collapse-tags
-                placeholder="请选择点赞机器人组合"
-                style="width: 100%"
-                >
-                <el-option
-                  v-for="item in test"
-                  :key="item"
-                  :label="item"
-                  :value="item">
-                </el-option>
-              </el-select>
-          </el-col>
+          <MultipleSelect></MultipleSelect>
         </el-form-item>
         <el-form-item label="点赞间隔时间">
           <el-col :span="14">
@@ -153,22 +138,7 @@
           </el-col>
         </el-form-item>
         <el-form-item label="评论组合">
-          <el-col :span="14">
-             <el-select
-              v-model="temp.comments_group_name"
-              multiple
-              collapse-tags
-              placeholder="请选择评论机器人组合"
-              style="width: 100%" 
-              >
-              <el-option
-                v-for="item in test"
-                :key="item"
-                :label="item"
-                :value="item">
-              </el-option>
-            </el-select>
-          </el-col>
+          <MultipleSelect></MultipleSelect>
         </el-form-item>
         <el-form-item label="评论间隔时间">
           <el-col :span="14">
@@ -203,11 +173,12 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
+import MultipleSelect from '@/views/manager/components/multipleSelect.vue' // secondary package based on el-pagination
 import { getRobotGroupList,createRobotGroup,updateRobotGroup } from '@/api/manager'
 import { parseTime } from '@/utils'
 export default {
   name:'thumbs',
-  components:{Pagination},
+  components:{Pagination,MultipleSelect},
   data(){
     return{
        tableData: [
@@ -221,37 +192,8 @@ export default {
           comments_space_time:'',
           comments_time_unit:'',
           robots_group_description:'',
-        },{
-          id: '2',
-          robots_group_name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          thumbs_group_name:'',
-          thumbs_space_time:'',
-          thumbs_time_unit:1,
-          comments_group_name:'',
-          comments_space_time:'',
-          comments_time_unit:'',
-          robots_group_description:'',
-        }, {
-          id: '3',
-          robots_group_name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          thumbs_group_name:'',
-          thumbs_space_time:'',
-          thumbs_time_unit:1,
-          comments_group_name:'',
-          comments_space_time:'',
-          comments_time_unit:'',
-          robots_group_description:'',
-        }, {
-          id: '4',
-          robots_group_name: '慢性咳嗽与呼吸道感染诊治高峰论坛',
-          thumbs_group_name:'',
-          thumbs_space_time:'',
-          thumbs_time_unit:1,
-          comments_group_name:'',
-          comments_space_time:'',
-          comments_time_unit:'',
-          robots_group_description:'',
-        }],
+        },
+        ],
         // 新建弹框
         dialogFormVisible:false,
         dialogStatus: '',
@@ -287,6 +229,14 @@ export default {
   },
   created(){
     this.getList();
+    for(let i=0;i<10;i++){
+      let mock={
+            id: i+1,
+            name: '机器人名称'+(i+1),
+            description:'描述描述'+(i+1),
+        }
+    this.robotData.push(mock)
+    }
   },
   watch:{
 
