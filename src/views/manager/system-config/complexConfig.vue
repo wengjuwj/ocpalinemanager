@@ -122,23 +122,10 @@
              <el-input v-model="temp.robots_group_name" />
           </el-col>
         </el-form-item>
-        <el-form-item label="点赞组合">
-          <MultipleSelect></MultipleSelect>
-        </el-form-item>
-        <el-form-item label="点赞间隔时间">
-          <el-col :span="14">
-             <el-input type="number" v-model="temp.thumbs_space_time" />
-          </el-col>
-          <el-col :span="10">
-            <el-radio-group v-model="temp.thumbs_time_unit" style="margin-left:15px">
-              <el-radio :label="0">时</el-radio>
-              <el-radio :label="1">分</el-radio>
-              <el-radio :label="2">秒</el-radio>
-            </el-radio-group>
-          </el-col>
-        </el-form-item>
         <el-form-item label="评论组合">
-          <MultipleSelect></MultipleSelect>
+          <el-button  icon="el-icon-plus" size="mini" type="primary" @click="dialogRobotVisible=true">
+                    选择
+          </el-button>
         </el-form-item>
         <el-form-item label="评论间隔时间">
           <el-col :span="14">
@@ -150,6 +137,19 @@
               <el-radio :label="1">分</el-radio>
               <el-radio :label="2">秒</el-radio>
             </el-radio-group>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="加赞数量">
+          <el-col :span="6">
+              <el-input type="number" />
+          </el-col>
+           <el-col :span="2">
+              <div style="text-align:center">
+                ~
+              </div>
+          </el-col>
+          <el-col :span="6">
+            <el-input type="number"/>
           </el-col>
         </el-form-item>
         <el-form-item label="组合描述">
@@ -167,7 +167,25 @@
         </el-button>
       </div>
     </el-dialog>
-
+    <!-- 组合选择 -->
+      <el-dialog title="评论组合选择" :visible.sync="dialogRobotVisible">
+      <el-form ref="dataRobotForm" :rules="rulesRobot" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
+        <el-form-item label="机器人类别" prop="">
+          <MultipleSelect :type-arr="robotTypeArr" type-text="机器人" render-type="1" ></MultipleSelect>
+        </el-form-item>
+        <el-form-item label="评论组合" prop="">
+          <MultipleSelect :type-arr="robotTypeArrComment" type-text="评论机器人" render-type="2"></MultipleSelect>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogRobotVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dialogRobotVisible = false">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -225,6 +243,20 @@ export default {
         robots_group_name:undefined,
         sort: '+id'
       },
+      robotTypeArr:[
+        {label:"自动",value:0},
+        {label:"手动",value:1},
+      ],
+      robotTypeArrComment:[
+        {label:"套话",value:0},
+        {label:"专业",value:1},
+      ],
+      // 选择评论机器人组合
+        dialogRobotVisible:false,
+        // 
+        rulesRobot:{
+
+        }
     }
   },
   created(){

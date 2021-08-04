@@ -28,7 +28,7 @@ for(let i=0;i<count;i++){
         timestamp: +Mock.Random.date('T'),
         name:liveArr[getRandom()],
         url:"xxx.xxx.xxx",
-        user_name:"主播"+(i+1),
+        user_name:"专家"+(i+1),
         classification:"分类"+(i+1),
         status:"0",
         status_text:"未开始",
@@ -54,14 +54,15 @@ for(let i=0;i<count;i++){
     )
   )
 }
-// mock 点赞机器人列表
+// mock 机器人列表
 for(let i=0;i<count;i++){
   thumbsList.push(
     Mock.mock(
       {
         id: i+1,
-        name:mockLevel(i)==1?("点赞机器人1"+i):("点赞机器人2"+i),
-        description:mockLevel(i)==1?("点赞机器人1"+i+"的描述"):("点赞机器人2"+i+"的描述"),
+        name:mockLevel(i)==1?("机器人1"+i):("机器人2"+i),
+        description:mockLevel(i)==1?("机器人1"+i+"的描述"):("机器人2"+i+"的描述"),
+        classification:0
       }
     )
   )
@@ -76,6 +77,7 @@ for(let i=0;i<count;i++){
         name:mockLevel(i)==1?("评论机器人1"+i):("评论机器人2"+i),
         comment_text:commentArr[getRandom()],
         description:mockLevel(i)==1?("评论机器人1"+i+"的描述"):("评论机器人2"+i+"的描述"),
+        classification:0
       }
     )
   )

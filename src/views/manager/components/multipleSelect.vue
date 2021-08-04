@@ -1,9 +1,14 @@
 <template>
   <el-row style="padding-right:15px">
-    <el-col :span="9">
+    <el-col :span="4">
+      <el-select placeholder="请选择分类" style="margin-right:10px">
+          <el-option v-for="(item,index) in typeArr" :key="index" :label="item.label" :value="item.value" />
+      </el-select>
+    </el-col>
+    <el-col :span="6">
               <div>
                   <div class="title" style="background:#dfe6ec;padding-left:10px">已选</div>
-                  <div class="content"  style="border:1px solid #dfe6ec;width:100%;height:250px">
+                  <div class="content"  style="border:1px solid #dfe6ec;width:100%;">
                       <div v-if="multipleSelection.length==0" class="nodata">
                         暂无数据
                       </div>
@@ -16,7 +21,7 @@
                   </div>
               </div>
           </el-col>
-          <el-col :span="15">
+          <el-col :span="14">
              <div>
                   <div class="title" style="background:#dfe6ec;padding-left:10px;margin-left:15px;">请选择</div>
                   <div class="content" >
@@ -25,7 +30,7 @@
                       border
                       @selection-change="handleSelectionChange"
                       ref="multipleTable"
-                      height="250px"
+                      max-height="250px"
                       style="width: 100%;margin-left:15px;">
                       <el-table-column
                       type="selection"
@@ -33,7 +38,7 @@
                       </el-table-column>
                       <el-table-column
                         prop="name"
-                        label="点赞机器人">
+                        :label="typeText">
                       </el-table-column>
                       <el-table-column
                         prop="description"
@@ -50,6 +55,22 @@
 <script>
 export default {
   name:'',
+  props:{
+    typeArr:{
+      type:Array,
+      default:()=>{
+        return []
+      }
+    },
+    renderType:{
+      type:String,
+      default:"1"
+    },
+    typeText:{
+      type:String,
+      default:"机器人"
+    }
+  },
   data(){
     return{
       robotData:[],
@@ -92,7 +113,7 @@ export default {
   }
   .selected{
     padding: 0 6px;
-    height: 100%;
+    max-height:250px;
     overflow-y: scroll;
     .selected-item{
       padding: 6px 10px;

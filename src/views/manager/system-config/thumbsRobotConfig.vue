@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-          <el-input placeholder="请输入点赞机器人名称" style="width:200px" class="filter-item"/>
+          <el-input placeholder="请输入机器人名称" style="width:200px" class="filter-item"/>
           <el-button  class="filter-item" type="primary" icon="el-icon-search" >
             搜索
           </el-button>
@@ -9,7 +9,7 @@
     <!--  -->
     <div class="operation-container filter-container">
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate"> 
-            新建点赞机器人
+            新建机器人
       </el-button>
       <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="multipleSelection.length==0"> 
             删除
@@ -37,11 +37,21 @@
       </el-table-column>
       <el-table-column
         prop="name"
-        label="点赞机器人名称"
+        label="机器人名称"
         align="center"
         >
         <template slot-scope="{row}">
           <span>{{ row.name }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="classification"
+        label="机器人类别"
+        align="center"
+        >
+        <template slot-scope="{row}">
+          <span v-if="row.classification==0">自动机器人</span>
+          <span v-if="row.classification==1">手动机器人</span>
         </template>
       </el-table-column>
       <el-table-column
@@ -71,12 +81,20 @@
     <!-- 新建-编辑信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="点赞机器人名称" prop="name">
+        <el-form-item label="机器人名称" prop="name">
           <el-col :span="24">
             <el-input v-model="temp.name" />
           </el-col>
         </el-form-item>
-         <el-form-item label="点赞机器人头像">
+        <el-form-item label="机器人类别" prop="classification">
+          <el-col :span="24">
+            <el-select v-model="temp.classification" placeholder="请选择机器人类别" style="width:100%">
+              <el-option  label="自动机器人" value="0" />
+              <el-option  label="手动机器人" value="1" />
+            </el-select>
+          </el-col>
+        </el-form-item>
+         <el-form-item label="机器人头像">
           <el-col :span="24">
            <uploadImg></uploadImg>
           </el-col>
@@ -137,12 +155,14 @@ export default {
        },
       //  
        rules: {
-        name: [{ required: true, message: '请填写点赞机器人名称', trigger: 'blur' }],
+        name: [{ required: true, message: '请填写机器人名称', trigger: 'blur' }],
+        classification:[{ required: true, message: '请选择机器人类别', trigger: 'blur' }],
       },
       temp: {
         id: undefined,
         name: '',
-        description: ''
+        description: '',
+        classification:''
       },
       test:[1,2,3,4],
       multipleSelection:[],
@@ -169,7 +189,7 @@ export default {
         description: ''
       }
     },
-    // 新建点赞机器人
+    // 新建机器人
     handleCreate(){
       this.resetTemp()
       this.dialogStatus = 'create'
@@ -178,7 +198,7 @@ export default {
         this.$refs['dataForm'].clearValidate()
       })
     },
-    // 编辑点赞机器人
+    // 编辑机器人
     handleUpdate(row){
       this.temp = Object.assign({}, row) // copy obj
       this.dialogStatus = 'update'

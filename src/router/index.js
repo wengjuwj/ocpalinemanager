@@ -157,7 +157,7 @@ export const constantRoutes = [
     path: '/autocomment',
     component: Layout,
     redirect: '/autocomment',
-    hidden: false,
+    hidden: true,
     children: [
       {
         path: 'autocomment',

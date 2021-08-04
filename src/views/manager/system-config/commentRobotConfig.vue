@@ -45,6 +45,16 @@
         </template>
       </el-table-column>
       <el-table-column
+          prop="classification"
+          label="机器人类别"
+          align="center"
+          >
+          <template slot-scope="{row}">
+            <span v-if="row.classification==0">套话</span>
+            <span v-if="row.classification==1">专业</span>
+          </template>
+      </el-table-column>
+      <el-table-column
         prop="comment_text"
         label="评论内容"
         align="center"
@@ -83,6 +93,14 @@
         <el-form-item label="评论机器人名称" prop="name">
           <el-col :span="24">
               <el-input v-model="temp.name" />
+          </el-col>
+        </el-form-item>
+         <el-form-item label="机器人类别" prop="classification">
+          <el-col :span="24">
+            <el-select v-model="temp.classification" placeholder="请选择机器人类别" style="width:100%">
+              <el-option  label="套话" value="0" />
+              <el-option  label="专业" value="1" />
+            </el-select>
           </el-col>
         </el-form-item>
         <el-form-item label="评论内容" prop="comment_text">
@@ -151,12 +169,14 @@ export default {
        rules: {
         name: [{ required: true, message: '请填写评论机器人名称', trigger: 'blur' }],
         comment_text: [{ required: true, message: '请填写评论内容', trigger: 'blur' }],
+        classification: [{ required: true, message: '请选择机器人类别', trigger: 'blur' }],
       },
       temp: {
         id: undefined,
         name: '',
         comment_text:'',
-        description: ''
+        description: '',
+        classification:''
       },
       test:[1,2,3,4],
       multipleSelection:[],

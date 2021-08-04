@@ -2,7 +2,7 @@
   <div class="app-container">
     <div class="filter-container">
           <el-input v-model="listQuery.name" placeholder="请输入直播间名称" style="width:200px" class="filter-item" />
-          <el-input v-model="listQuery.user_name" placeholder="请输入主播名称" style="width:200px" class="filter-item" />
+          <el-input v-model="listQuery.user_name" placeholder="请输入专家名称" style="width:200px" class="filter-item" />
           <el-select  v-model="listQuery.classification" placeholder="请选择分类" clearable style="width: 150px" class="filter-item">
             <el-option v-for="item in test" :key="item" :label="item" :value="item" />
           </el-select>
@@ -55,7 +55,7 @@
       </el-table-column>
       <el-table-column
         prop="user_name"
-        label="主讲人"
+        label="专家"
         align="center"
         >
         <template slot-scope="{row}">
@@ -150,7 +150,7 @@
         <el-form-item label="直播间名称" prop="name">
           <el-input v-model="temp.name" />
         </el-form-item>
-        <el-form-item label="主讲人" prop="user_name">
+        <el-form-item label="专家" prop="user_name">
           <el-input v-model="temp.user_name" />
         </el-form-item>
         <el-form-item label="直播时间" prop="telecase_time">
@@ -243,7 +243,7 @@ export default {
       //  
        rules: {
         name: [{ required: true, message: '请填写直播间名称', trigger: 'blur' }],
-        user_name: [{ required: true, message: '请填写主播名称', trigger: 'blur' }],
+        user_name: [{ required: true, message: '请填写专家名称', trigger: 'blur' }],
         telecase_time: [{ required: true, message: '请选择直播时间', trigger: 'date' }],
         classification: [{ required: true, message: '请选择直播间分类', trigger: 'change' }]
       },

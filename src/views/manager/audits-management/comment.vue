@@ -131,25 +131,25 @@ export default {
        tableData: [
         {
           id: '1',
-          user_name:"主播1",
+          user_name:"专家1",
           comment:"分类1",
           status:"未开始",
           update_time:"2021-08-10 18:00"
         },{
           id: '2',
-          user_name:"主播1",
+          user_name:"专家1",
           comment:"分类1",
           status:"未开始",
           update_time:"2021-08-10 18:00"
         }, {
           id: '3',
-          user_name:"主播1",
+          user_name:"专家1",
           comment:"分类1",
           status:"已结束",
           update_time:"2021-08-10 18:00"
         }, {
           id: '4',
-          user_name:"主播1",
+          user_name:"专家1",
           comment:"分类1",
           status:"直播中",
           update_time:"2021-08-10 18:00"

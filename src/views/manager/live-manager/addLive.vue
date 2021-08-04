@@ -11,8 +11,29 @@
           </el-row>
           <el-row>
             <el-col :span="24">
-              <el-form-item label="主讲人名称" prop="user_name">
-                <el-input v-model="form.user_name" />
+              <el-form-item label="专家名称" prop="user_name">
+                <el-button  icon="el-icon-plus" size="mini" type="primary" @click="dialogProfessorsVisible=true">
+                    选择
+                </el-button>
+                <div>
+                  <div class="content" >
+                      <el-table
+                      :data="confimProfessorsData"
+                      border
+                      ref="multipleTable"
+                      max-height="250px"
+                      style="width: 100%;">
+                      <el-table-column
+                        prop="professor_name"
+                        label="专家名称">
+                      </el-table-column>
+                      <el-table-column
+                        prop="professor_title"
+                        label="职称">
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -43,19 +64,38 @@
           <el-row>
             <el-col :span="24">
                <el-form-item label="详情介绍">
-                  <tinymce v-model="content"></tinymce>
+                  <tinymce v-model="form.content"></tinymce>
               </el-form-item>
             </el-col>
           </el-row>
-          <!-- <el-row>
+          <el-row>
             <el-col :span="24">
-              <el-form-item label="互动配置">
-                <el-select v-model="form.visitors_setting" class="filter-item" placeholder="Please select" style="width:100%">
-                  <el-option v-for="item in test" :key="item" :label="item" :value="item" />
-                </el-select>
+               <el-form-item label="相关视频">
+                  <el-button  icon="el-icon-plus" size="mini" type="primary" @click="dialogFormVisible=true">
+                    选择
+                  </el-button>
+                <div>
+                  <div class="content" >
+                      <el-table
+                      :data="confimRelationData"
+                      border
+                      ref="multipleTable"
+                      max-height="250px"
+                      style="width: 100%;">
+                      <el-table-column
+                        prop="name"
+                        label="直播名称">
+                      </el-table-column>
+                      <el-table-column
+                        prop="user_name"
+                        label="专家">
+                      </el-table-column>
+                    </el-table>
+                  </div>
+                </div>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>
           <el-row>
             <el-col :span="24">
               <el-form-item label="推流/拉流地址">
@@ -63,38 +103,95 @@
               </el-form-item>
             </el-col>
           </el-row>
-          
-        
-          <!-- <el-form-item label="即时配送">
-              <el-switch v-model="form.delivery"></el-switch>
-            </el-form-item> -->
-          <!-- <el-form-item label="活动性质">
-              <el-checkbox-group v-model="form.type">
-                <el-checkbox label="美食/餐厅线上活动" name="type"></el-checkbox>
-                <el-checkbox label="地推活动" name="type"></el-checkbox>
-                <el-checkbox label="线下主题活动" name="type"></el-checkbox>
-                <el-checkbox label="单纯品牌曝光" name="type"></el-checkbox>
-              </el-checkbox-group>
-            </el-form-item>
-            <el-form-item label="特殊资源">
-              <el-radio-group v-model="form.resource">
-                <el-radio label="线上品牌商赞助"></el-radio>
-                <el-radio label="线下场地免费"></el-radio>
-              </el-radio-group>
-            </el-form-item>
-            <el-form-item label="活动形式">
-              <el-input type="textarea" v-model="form.desc"></el-input>
-            </el-form-item> -->
           <el-form-item>
             <el-button type="primary" @click="onSubmit">立即创建</el-button>
             <!-- <el-button>取消</el-button> -->
           </el-form-item>
         </el-form>
+        <!-- 选择视频 -->
+        <el-dialog title="选择视频" :visible.sync="dialogFormVisible">
+          <div class="relation_class">
+            <el-row>
+              <el-select v-model="form.classification" placeholder="请选择分类">
+                <el-option label="分类一" value="分类一" />
+                <el-option label="分类二" value="分类一" />
+              </el-select>
+            </el-row>
+          </div>
+          <el-table
+            :data="relationData"
+            border
+            @selection-change="handleSelectionChange"
+            ref="multipleTable"
+            max-height="250px"
+            style="width: 100%;">
+            <el-table-column
+            type="selection"
+            align="center">
+            </el-table-column>
+            <el-table-column
+              prop="name"
+              label="直播名称">
+            </el-table-column>
+            <el-table-column
+              prop="user_name"
+              label="专家">
+            </el-table-column>
+          </el-table>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="confirmSelect(1)">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
+        <!-- 选择专家 -->
+        <el-dialog title="选择专家" :visible.sync="dialogProfessorsVisible">
+          <div class="relation_class">
+            <el-row>
+              <el-select v-model="form.classification" placeholder="请选择分类">
+                <el-option label="分类一" value="分类一" />
+                <el-option label="分类二" value="分类一" />
+              </el-select>
+            </el-row>
+          </div>
+          <el-table
+            :data="professorsData"
+            border
+            @selection-change="handleProfessorsChange"
+            ref="multipleTable"
+            max-height="250px"
+            style="width: 100%;">
+            <el-table-column
+            type="selection"
+            align="center">
+            </el-table-column>
+            <el-table-column
+              prop="professor_name"
+              label="专家名称">
+            </el-table-column>
+            <el-table-column
+              prop="professor_title"
+              label="职称">
+            </el-table-column>
+          </el-table>
+          <div slot="footer" class="dialog-footer">
+            <el-button @click="dialogProfessorsVisible = false">
+              取消
+            </el-button>
+            <el-button type="primary" @click="confirmSelect(2)">
+              确定
+            </el-button>
+          </div>
+        </el-dialog>
     
   </div>
 </template>
 
 <script>
+import { getLiveList,getProfessorsList } from '@/api/manager'
 import uploadImg from '../components/uploadImg'
 import tinymce from '../../../components/Tinymce'
 export default {
@@ -108,9 +205,20 @@ export default {
         delivery: false,
         type: [],
         resource: '',
-        desc: ''
+        desc: '',
+        content:'',
+        relation_video:''
       },
-      content:''
+      // 选择视频弹框
+      relationData:[],
+      confimRelationData:[],
+      dialogFormVisible:false,
+      multipleSelection:[],
+      // 选择专家弹框
+      professorsData:[],
+      confimProfessorsData:[],
+      dialogProfessorsVisible:false,
+      multipleProfessors:[],
     }
   },
   components:{
@@ -122,13 +230,37 @@ export default {
     if(id){
       document.title="编辑直播间"
     }
+    this.getRelationData();
   },
   methods: {
     onSubmit() {
       console.log('submit!')
       console.log('富文本编辑器', this.content)
     },
-
+    handleSelectionChange(val){
+      this.multipleSelection = val;
+    },
+    handleProfessorsChange(val){
+      this.multipleProfessors = val;
+    },
+    getRelationData(){
+      getLiveList().then(response => {
+        this.relationData = response.data.data
+      });
+      getProfessorsList().then(response => {
+        this.professorsData = response.data.data
+      });
+    },
+    confirmSelect(type){
+      if(type==1){
+        this.confimRelationData=this.multipleSelection;
+        this.dialogFormVisible = false
+      }
+      if(type==2){
+        this.confimProfessorsData=this.multipleProfessors;
+        this.dialogProfessorsVisible = false
+      }
+    }
   }
 }
 </script>
@@ -160,5 +292,8 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.relation_class{
+  margin-bottom: 15px;
 }
 </style>
