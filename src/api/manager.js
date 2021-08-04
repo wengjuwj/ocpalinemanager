@@ -120,4 +120,51 @@ export function updateRobotGroup(data) {
     data
   })
 }
-
+// 获取专家列表
+export function getProfessorsList(query) {
+  return request({
+    url: '/professors/list',
+    method: 'get',
+    params: query
+  })
+}
+// 创建专家信息
+export function createProfessor(data){
+  return request({
+    url:'/professors/list/create',
+    method: 'post',
+    data
+  })
+}
+// 编辑专家信息
+export function updateProfessor(data) {
+  return request({
+    url: '/professors/list/update',
+    method: 'post',
+    data
+  })
+}
+// 获取自动评论列表
+export function geAutoCommentList(query) {
+  return request({
+    url: '/autocomment/list',
+    method: 'get',
+    params: query
+  })
+}
+// 创建评论
+export function createAutoComment(data){
+  return request({
+    url:'/autocomment/list/create',
+    method: 'post',
+    data
+  })
+}
+// 评论发布
+export function publishComment(data){
+  return request({
+    url:'/autocomment/list/publish',
+    method: 'post',
+    data
+  })
+}

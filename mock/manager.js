@@ -10,6 +10,10 @@ const commentrobotsList=[]
 
 const robotgroupList=[]
 
+const professorsList=[]
+
+const autoCommentList=[]
+
 const count=100
 
 const liveArr=["慢性咳嗽与呼吸道感染诊治高峰论坛","上海麻醉医学发展专题片","智启梦想高校行大咖金句——王志萍教授","智启梦想高校行大咖金句——曾因明教授","智启梦想高校行大咖金句——董海龙教授"]
@@ -91,6 +95,39 @@ for(let i=0;i<count;i++){
         comments_space_time:10,
         comments_time_unit:1,
         robots_group_description:'',
+      }
+    )
+  )
+}
+
+// mock专家列表
+for(let i=0;i<count;i++){
+  professorsList.push(
+    Mock.mock(
+      {
+        id: i+1,
+        timestamp: +Mock.Random.date('T'),
+        professor_name:"专家姓名",
+        professor_title:"职称",
+        professor_avatar:"",
+        professor_classification:"分类",
+        professor_shortcut:"简介",
+        professor_place:""
+      }
+    )
+  )
+}
+
+// mock自动评论列表
+for(let i=0;i<30;i++){
+  autoCommentList.push(
+    Mock.mock(
+      {
+        id: i+1,
+        timestamp: +Mock.Random.date('T'),
+        comment:"评论内容",
+        user_name:"用户"+"hhoyu13"+i,
+        user_avatar:"",
       }
     )
   )
@@ -324,6 +361,88 @@ module.exports = [
   },
   {
     url: '/robotgroup/list/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/professors/list',
+    type: 'get',
+    response: config => {
+      const { professor_name,professor_title, professor_classification,page = 1, limit = 20, sort } = config.query
+
+      let mockList = professorsList.filter(item => {
+        if (professor_name && item.professor_name.indexOf(professor_name) < 0) return false
+        if (professor_title && item.professor_title !== professor_title) return false
+        if (professor_classification && item.professor_classification !== professor_classification) return false
+        return true
+      })
+
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
+
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 200,
+        data: {
+          total: mockList.length,
+          data: pageList
+        }
+      }
+    }
+  },
+  {
+    url: '/professors/list/create',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/professors/list/update',
+    type: 'post',
+    response: _ => {
+      return {
+        code: 200,
+        data: 'success'
+      }
+    }
+  },
+  {
+    url: '/autocomment/list',
+    type: 'get',
+    response: config => {
+      const {page = 1, limit = 20, sort } = config.query
+      let mockList=autoCommentList;
+      // let mockList = autoCommentList.filter(item => {
+      //   return true
+      // })
+
+      if (sort === '-id') {
+        mockList = mockList.reverse()
+      }
+      const pageList = mockList.filter((item, index) => index < limit * page && index >= limit * (page - 1))
+
+      return {
+        code: 200,
+        data: {
+          total: mockList.length,
+          data: pageList
+        }
+      }
+    }
+  },
+  {
+    url: '/autocomment/list/publish',
     type: 'post',
     response: _ => {
       return {

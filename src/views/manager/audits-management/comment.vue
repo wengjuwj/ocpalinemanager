@@ -185,14 +185,7 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        name: 1,
-        user_name: '',
-        classification:'',
-        telecase_time: new Date(),
-        status: 'published',
-        visitors_num:'',
-        visitors_multiple:'',
-        visitors_setting:''
+        text: "",
       }
     },
     // 表格复选

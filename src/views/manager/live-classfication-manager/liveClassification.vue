@@ -95,9 +95,8 @@
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="分类名称" prop="classification">
           <el-col :span="24">
-             
-          </el-col>
-          <el-input v-model="temp.classification" />
+              <el-input v-model="temp.classification" />
+          </el-col>  
         </el-form-item>
         <el-form-item label="上级分类" prop="parent_status">
           <el-col :span="24">
@@ -221,8 +220,8 @@ export default {
             this.tableData.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '提示',
+              message: '新建成功',
               type: 'success',
               duration: 2000
             })
@@ -243,8 +242,8 @@ export default {
             this.tableData.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '提示',
+              message: '编辑成功',
               type: 'success',
               duration: 2000
             })
@@ -255,8 +254,8 @@ export default {
     // 删除
     handleDelete(row, index) {
       this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
+        title: '提示',
+        message: '删除成功',
         type: 'success',
         duration: 2000
       })

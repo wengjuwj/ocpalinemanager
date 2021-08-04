@@ -1,17 +1,17 @@
 <template>
   <div class="app-container">
-    <div class="filter-container">
+    <!-- <div class="filter-container">
           <el-input placeholder="请输入专家名称" style="width:200px" class="filter-item" v-model="listQuery.professor_name"/>
           <el-input placeholder="职称" style="width:200px" class="filter-item" v-model="listQuery.professor_title"/>
           <el-input placeholder="专家分类" style="width:200px" class="filter-item" v-model="listQuery.professor_classification"/>
           <el-button  class="filter-item" type="primary" icon="el-icon-search" @click="search">
             搜索
           </el-button>
-    </div>
+    </div> -->
     <!--  -->
     <div class="operation-container filter-container">
       <el-button class="filter-item" type="primary" icon="el-icon-plus" @click="handleCreate"> 
-            新建专家
+            新建评论
       </el-button>
       <el-button class="filter-item" type="danger" icon="el-icon-delete" :disabled="multipleSelection.length==0"> 
             删除
@@ -38,45 +38,49 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="classification"
-        label="专家名称"
+        prop="user_name"
+        label="用户名"
         align="center"
         >
         <template slot-scope="{row}">
-          <span>{{ row.professor_name }}</span>
+          <span>{{ row.user_name }}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="professor_title"
-        label="职称"
+        prop="user_avatar"
+        label="头像"
         align="center" 
         >
         <template slot-scope="{row}">
-          <span>{{ row.professor_title}}</span>
+          <span>{{ row.user_avatar}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="professor_avatar"
-        label="头像"
+        prop="comment"
+        label="评论内容"
         align="center"
         >
         <template slot-scope="{row}">
-          <span>{{ row.professor_avatar}}</span>
+          <span>{{ row.comment}}</span>
         </template>
       </el-table-column>
       <el-table-column
-        prop="professor_shortcut"
-        label="简介"
+        prop="timestamp"
+        label="评论时间"
         align="center"
         >
         <template slot-scope="{row}">
-          <span>{{ row.professor_shortcut}}</span>
+          <span>{{ row.timestamp | parseTime('{y}-{m}-{d} {h}:{i}')}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" align="center" width="230" class-name="small-padding fixed-width">
         <template slot-scope="{row,$index}">
-          <el-tooltip content="编辑" placement="top" effect="light">
+          <!-- <el-tooltip content="编辑" placement="top" effect="light">
              <el-button type="primary" icon="el-icon-edit" circle @click="handleUpdate(row)">
+             </el-button>
+          </el-tooltip> -->
+          <el-tooltip content="立即发布" placement="top" effect="light">
+             <el-button type="primary" icon="el-icon-s-promotion" circle @click="handlePublish(row,$index)">
              </el-button>
           </el-tooltip>
           <el-tooltip content="删除" placement="top" effect="light">
@@ -91,29 +95,21 @@
     <!-- 新建-编辑信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
-        <el-form-item label="专家名称" prop="professor_name">
+        <el-form-item label="机器人" prop="user_name">
           <el-col :span="24">
-             <el-input v-model="temp.professor_name" />
-          </el-col>
-        </el-form-item>
-         <el-form-item label="职称" prop="professor_title">
-            <el-col :span="24">
-                <el-input v-model="temp.professor_title" />
+            <el-select v-model="temp.visitors_setting" class="filter-item" placeholder="请选择机器人" style="width:100%">
+              <el-option v-for="item in test" :key="item" :label="item" :value="item" />
+            </el-select>
           </el-col>
         </el-form-item>
         <el-form-item label="头像">
+            <el-col :span="24">
+                <uploadImg></uploadImg>
+          </el-col>
+        </el-form-item>
+        <el-form-item label="评论内容" prop="comment">
            <el-col :span="24">
-             <uploadImg></uploadImg>
-          </el-col>
-        </el-form-item>
-        <el-form-item label="分类">
-            <el-col :span="24">
-                <el-input v-model="temp.professor_classification" />
-          </el-col>
-        </el-form-item>
-        <el-form-item label="简介">
-            <el-col :span="24">
-                <el-input v-model="temp.professor_shortcut" />
+             <el-input v-model="temp.comment" />
           </el-col>
         </el-form-item>
       </el-form>
@@ -132,7 +128,7 @@
 
 <script>
 import Pagination from '@/components/Pagination' // secondary package based on el-pagination
-import { getProfessorsList,createProfessor,updateProfessor } from '@/api/manager'
+import { geAutoCommentList,createAutoComment,updateProfessor } from '@/api/manager'
 import { parseTime } from '@/utils'
 import uploadImg from '../components/uploadImg'
 export default {
@@ -150,17 +146,15 @@ export default {
        },
       //  
        rules: {
-        professor_name: [{ required: true, message: '专家名称不能为空', trigger: 'change' }],
-        professor_title:[{ required: true, message: '职称不能为空', trigger: 'change' }],
-        professor_avatar:[{ required: true, message: '头像不能为空', trigger: 'change' }]
+        user_name: [{ required: true, message: '请选择机器人名称', trigger: 'change' }],
+        user_avatar:[{ required: true, message: '请上传机器人头像', trigger: 'change' }],
+        comment:[{ required: true, message: '评论内容不能为空', trigger: 'change' }]
       },
       temp: {
         id: undefined,
-        professor_name: '',
-        professor_title:'',
-        professor_avatar:'',
-        professor_classification:'',
-        professor_shortcut:'',
+        user_name: '',
+        user_avatar:'',
+        comment:''
       },
       test:[1,2,3,4],
       multipleSelection:[],
@@ -185,11 +179,9 @@ export default {
     resetTemp() {
       this.temp = {
         id: undefined,
-        professor_name: '',
-        professor_title:'',
-        professor_avatar:'',
-        professor_classification:'',
-        professor_shortcut:'',
+        user_name: '',
+        user_avatar:'',
+        comment:''
       }
     },
     // 新建分类
@@ -219,7 +211,7 @@ export default {
             this.temp.parent=""
           }
           this.temp.id = parseInt(Math.random() * 100) + 1024 // mock a id
-          createProfessor(this.temp).then(() => {
+          createAutoComment(this.temp).then(() => {
             this.tableData.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
@@ -264,13 +256,22 @@ export default {
       })
       this.tableData.splice(index, 1)
     },
+    // 发布
+    handlePublish(){
+       this.$notify({
+        title: '提示',
+        message: '发布成功',
+        type: 'success',
+        duration: 2000
+      })
+    },
     // 表格复选
     handleSelectionChange(val){
       this.multipleSelection = val;
     },
     // 获取列表数据
     getList(){
-      getProfessorsList(this.listQuery).then(response => {
+      geAutoCommentList(this.listQuery).then(response => {
         this.tableData = response.data.data
         this.total = response.data.total
       })

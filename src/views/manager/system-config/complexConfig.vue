@@ -282,8 +282,8 @@ export default {
              this.tableData.unshift(this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Created Successfully',
+              title: '提示',
+              message: '新建成功',
               type: 'success',
               duration: 2000
             })
@@ -300,8 +300,8 @@ export default {
             this.tableData.splice(index, 1, this.temp)
             this.dialogFormVisible = false
             this.$notify({
-              title: 'Success',
-              message: 'Update Successfully',
+              title: '提示',
+              message: '编辑成功',
               type: 'success',
               duration: 2000
             })
@@ -312,8 +312,8 @@ export default {
     // 删除
     handleDelete(row, index) {
       this.$notify({
-        title: 'Success',
-        message: 'Delete Successfully',
+        title: '提示',
+        message: '删除成功',
         type: 'success',
         duration: 2000
       })

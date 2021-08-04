@@ -152,6 +152,20 @@ export const constantRoutes = [
         meta: { title: '专家列表', icon: 'user', noCache: true }
       }
     ]
+  },
+  {
+    path: '/autocomment',
+    component: Layout,
+    redirect: '/autocomment',
+    hidden: false,
+    children: [
+      {
+        path: 'autocomment',
+        component: () => import('@/views/manager/auto-comment/autoComment'),
+        name: 'autocomment',
+        meta: { title: '自动评论列表', icon: 'user', noCache: true }
+      }
+    ]
   }
 ]
 
