@@ -68,7 +68,7 @@
     </el-table>
     <!-- 分页 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" style="margin-top:0;"/>
-    <!-- 新建-编辑点赞机器人信息 弹框 -->
+    <!-- 新建-编辑信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="点赞机器人名称" prop="name">

@@ -139,6 +139,20 @@ export const constantRoutes = [
       }
     ]
   },
+  {
+    path: '/professors',
+    component: Layout,
+    redirect: '/professors',
+    hidden: false,
+    children: [
+      {
+        path: 'professors',
+        component: () => import('@/views/manager/professor-list/professor'),
+        name: 'professors',
+        meta: { title: '专家列表', icon: 'user', noCache: true }
+      }
+    ]
+  }
 ]
 
 /**

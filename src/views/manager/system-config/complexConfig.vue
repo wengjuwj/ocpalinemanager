@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <div class="filter-container">
-          <el-input placeholder="请输入机器人组合" style="width:200px" class="filter-item" v-model="listQuery.robots_group_name"/>
+          <el-input v-model="listQuery.robots_group_name" placeholder="请输入机器人组合" style="width:200px" class="filter-item" />
           <el-button  class="filter-item" type="primary" icon="el-icon-search" >
             搜索
           </el-button>
@@ -114,7 +114,7 @@
     </el-table>
     <!-- 分页 -->
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" style="margin-top:0;"/>
-    <!-- 新建-编辑点赞机器人信息 弹框 -->
+    <!-- 新建-编辑信息 弹框 -->
     <el-dialog :title="textMap[dialogStatus]" :visible.sync="dialogFormVisible">
       <el-form ref="dataForm" :rules="rules" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
         <el-form-item label="机器人组合名称" prop="robots_group_name">

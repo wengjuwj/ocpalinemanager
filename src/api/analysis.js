@@ -7,3 +7,11 @@ export function getMapData(query) {
     params: query
   })
 }
+export function getLineData(query) {
+  return request({
+    url: '/live/linedata',
+    method: 'get',
+    params: query
+  })
+}
+

@@ -64,21 +64,9 @@ export default {
       let xData=[];
       let yData=[];
       expectedData.map(function (item,index) {
-              if(index<24){
-                let tempString=''
-                  if(index<10){
-                    tempString='0'+index+':00'
-                  }else{
-                    tempString=index+':00'
-                  }
-                xData.push(tempString)
-              }
-           });
-      expectedData.map(function (item,index1) {
-            if(index1<24){
+              xData.push(item[0])
               yData.push(item[1]);
-            }
-          });
+      });
       this.chart.setOption({
          // Make gradient line here
           visualMap: [{

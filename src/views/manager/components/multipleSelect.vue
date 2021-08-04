@@ -4,10 +4,10 @@
               <div>
                   <div class="title" style="background:#dfe6ec;padding-left:10px">已选</div>
                   <div class="content"  style="border:1px solid #dfe6ec;width:100%;height:250px">
-                      <div class="nodata" v-if="multipleSelection.length==0">
+                      <div v-if="multipleSelection.length==0" class="nodata">
                         暂无数据
                       </div>
-                      <div class="selected" v-if="multipleSelection.length!=0">
+                      <div v-if="multipleSelection.length!=0" class="selected">
                           <div class="selected-item" v-for="(item,index) in multipleSelection" :key="index">
                               <div class="selected-name">{{item.name}}</div>
                               <div class="selected-operation" @click="deleteSelected(item,index)"><i class="el-icon-error" /></div>

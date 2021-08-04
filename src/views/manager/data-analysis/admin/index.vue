@@ -16,14 +16,14 @@
     </el-row> -->
 
     <el-row :gutter="32">
-      <el-col :xs="24" :sm="24" :lg="8">
+      <!-- <el-col :xs="24" :sm="24" :lg="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>基本信息</span>
-            <!-- <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
+            <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
              <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;"/>
-            </el-tooltip> -->
-            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+            </el-tooltip>
+            <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
           </div>
           <div>
             <div class="basic-info">
@@ -66,48 +66,50 @@
             </div>
           </div>
         </el-card>
-      </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      </el-col> -->
+      <el-col :xs="24" :sm="24" :lg="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>热力地图</span>
-            <!-- <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
-             <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;"/>
-            </el-tooltip> -->
-            <!-- <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button> -->
+            <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
+             <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;" @click="dialogMapVisible=true" />
+            </el-tooltip>
           </div>
           <div>
+            <!-- 总计人数 -->
+            <div>总计人数：<count-to :start-val="0" :end-val="5016" :duration="2600" class="card-list-num" /></div>
             <map-chart :chart-data="mapData" />
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <el-col :xs="24" :sm="24" :lg="12">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>观看时间曲线</span>
-            <!-- <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
-             <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;"/>
-            </el-tooltip> -->
+            <span>观看时间曲线 </span>
+            <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
+             <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;" @click="dialogLineVisible=true" />
+            </el-tooltip>
           </div>
           <div>
-            <!-- <line-chart :chart-data="lineChartData" /> -->
+            <!-- 峰值人数 -->
+            <div>峰值人数：<count-to :start-val="0" :end-val="1036" :duration="2600" class="card-list-num" /></div>
             <live-line-chart :chart-data="liveLineData"></live-line-chart>
           </div>
         </el-card>
       </el-col>
-      <el-col :xs="24" :sm="24" :lg="8">
+      <!-- <el-col :xs="24" :sm="24" :lg="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
             <span>数据统计（饼图）</span>
-            <!-- <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
+            <el-tooltip content="编辑" placement="top" effect="light" style="float: right;">
              <i class="el-icon-edit" style="cursor:pointer;color:#1682e6;"/>
-            </el-tooltip> -->
+            </el-tooltip>
           </div>
           <div>
             <pie-chart />
           </div>
         </el-card>
-      </el-col>
+      </el-col> -->
       <!-- <el-col :xs="24" :sm="24" :lg="8">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
@@ -122,6 +124,33 @@
           </el-card>
       </el-col> -->
     </el-row>
+    <el-row :gutter="32">
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>热力地图(调整)</span>
+          </div>
+          <div>
+             <!-- 总计人数 -->
+            <div>总计人数：<count-to :start-val="0" :end-val="5016" :duration="2600" class="card-list-num" /></div>
+            <map-chart :chart-data="changeMapData" />
+          </div>
+        </el-card>
+      </el-col>
+      <el-col :xs="24" :sm="24" :lg="12">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span>观看时间曲线(调整)</span>
+          </div>
+          <div>
+            <!-- 峰值人数 -->
+            <div>峰值人数：<count-to :start-val="0" :end-val="1036" :duration="2600" class="card-list-num" /></div>
+            <live-line-chart :chart-data="changeLiveLineData"></live-line-chart>
+          </div>
+        </el-card>
+      </el-col>
+    </el-row>
+    
     <!-- 设置访问量 -->
     <el-dialog title="设置访问量" :visible.sync="dialogVisitorsVisible">
       <el-form ref="visitorsForm" :rules="rules" :model="dialogVisitorsForm" label-position="left" label-width="100px" style="width: 400px; margin-left:50px;">
@@ -154,6 +183,98 @@
         </el-button>
       </div>
     </el-dialog>
+    <!-- 设置地图数据 -->
+    <el-dialog title="热力地图" :visible.sync="dialogMapVisible">
+      <el-form ref="mapForm" :rules="rulesMap" :model="dialogMapForm" label-position="left" label-width="100px" style="width:80%; margin-left:50px;">
+        <el-form-item label="设置访问倍数">
+          <el-input type="number" v-model="dialogMapForm.set_visitors_multiple" />
+        </el-form-item>
+        <el-form-item label="访问量">
+            <el-table
+              :data="dialogMapForm.set_visitors"
+              border
+              ref="multipleTable"
+              height="300px"
+              style="width: 100%;margin-left:15px;">
+              <el-table-column
+                prop="name"
+                label="省份">
+                <template slot-scope="{row}">
+                  <span>{{ row.name }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="value"
+                label="原始访问量">
+                <template slot-scope="{row}">
+                  <span>{{ row.value }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="value"
+                label="调整访问量">
+                <template slot-scope="{row}">
+                  <el-input v-model="row.set_value" />
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogMapVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="setMapData">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
+    <!-- 设置时间曲线 -->
+    <el-dialog title="时间曲线" :visible.sync="dialogLineVisible">
+      <el-form ref="lineForm" :rules="rulesLine" :model="dialogLineForm" label-position="left" label-width="100px" style="width:80%; margin-left:50px;">
+        <el-form-item label="设置访问倍数">
+          <el-input type="number" v-model="dialogLineForm.set_visitors_multiple" />
+        </el-form-item>
+        <el-form-item label="访问量">
+            <el-table
+              :data="dialogLineForm.set_visitors"
+              border
+              ref="multipleLineTable"
+              height="300px"
+              style="width: 100%;margin-left:15px;">
+              <el-table-column
+                prop="name"
+                label="时间">
+                <template slot-scope="{row}">
+                  <span>{{ row.time_slot }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="value"
+                label="原始访问量">
+                <template slot-scope="{row}">
+                  <span>{{ row.value }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column
+                prop="value"
+                label="调整访问量">
+                <template slot-scope="{row}">
+                  <el-input v-model="row.set_value" />
+                </template>
+              </el-table-column>
+            </el-table>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogLineVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="setLineData">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -168,7 +289,7 @@ import BoxCard from './components/BoxCard'
 import MapChart from './components/MapChart'
 import LiveLineChart from './components/LiveLineChart.vue'
 // api
-import { getMapData } from '@/api/analysis'
+import { getMapData,getLineData } from '@/api/analysis'
 
 const lineChartData = {
   newVisitis: {
@@ -203,10 +324,15 @@ export default {
   },
   data() {
     return {
-      liveLineData:[["2000-06-05",116],["2000-06-06",129],["2000-06-07",135],["2000-06-08",86],["2000-06-09",73],["2000-06-10",85],["2000-06-11",73],["2000-06-12",68],["2000-06-13",92],["2000-06-14",130],["2000-06-15",245],["2000-06-16",139],["2000-06-17",115],["2000-06-18",111],["2000-06-19",309],["2000-06-20",206],["2000-06-21",137],["2000-06-22",128],["2000-06-23",85],["2000-06-24",94],["2000-06-25",71],["2000-06-26",106],["2000-06-27",84],["2000-06-28",93],["2000-06-29",85],["2000-06-30",73],["2000-07-01",83],["2000-07-02",125],["2000-07-03",107],["2000-07-04",82],["2000-07-05",44],["2000-07-06",72],["2000-07-07",106],["2000-07-08",107],["2000-07-09",66],["2000-07-10",91],["2000-07-11",92],["2000-07-12",113],["2000-07-13",107],["2000-07-14",131],["2000-07-15",111],["2000-07-16",64],["2000-07-17",69],["2000-07-18",88],["2000-07-19",77],["2000-07-20",83],["2000-07-21",111],["2000-07-22",57],["2000-07-23",55],["2000-07-24",60]],
+      // 观看曲线原始数据块
+      liveLineData:[],
+      // 观看数据调整数据块
+      changeLiveLineData:[],
       lineChartData: lineChartData.newVisitis,
-      // 热力地图数据
+      // 热力地图原始数据块
       mapData: [],
+      // 热力地图调整数据块
+      changeMapData:[],
       // 访问量
       dialogVisitorsVisible:false,
       rules:{
@@ -223,15 +349,55 @@ export default {
       dialogMultipleForm:{
         multiple:''
       },
+      // 地图编辑
+      dialogMapVisible:false,
+      rulesMap:{},
+      dialogMapForm:{
+        set_visitors_multiple:'',
+        set_visitors:[]
+      },
+      // 观看时间曲线编辑
+      dialogLineVisible:false,
+      rulesLine:{},
+      dialogLineForm:{
+        set_visitors_multiple:'',
+        set_visitors:[]
+      },
       query:{
         id:''
       }
     }
   },
   created(){
-    this.query.id=this.$route.query && this.$route.query.id
-    console.log(this.query.id, 'this.querythis.query')
+    this.query.id=this.$route.query && this.$route.query.id;
     this.getMapData();
+    this.getLineData();
+  },
+  watch:{
+    'dialogMapForm.set_visitors_multiple':function(){
+      let multiple=1;
+      if(this.dialogMapForm.set_visitors_multiple!=''&&this.dialogMapForm.set_visitors_multiple!=0){
+        multiple=parseInt(this.dialogMapForm.set_visitors_multiple)
+      }
+      this.dialogMapForm.set_visitors.forEach(item=>{
+        if(item.value!=0){
+          item.set_value=(item.value)*multiple
+        }
+      })
+      this.setMapChartData(this.dialogMapForm.set_visitors)
+    },
+    'dialogLineForm.set_visitors_multiple':function(){
+      let multiple=1;
+      if(this.dialogLineForm.set_visitors_multiple!=''&&this.dialogLineForm.set_visitors_multiple!=0){
+        multiple=parseInt(this.dialogLineForm.set_visitors_multiple)
+      }
+      this.dialogLineForm.set_visitors.forEach(item=>{
+        if(item.value!=0){
+          item.set_value=(item.value)*multiple
+        }
+      })
+      this.setLinChartData();
+    }
   },
   methods: {
     // reset visitorsForm data
@@ -243,13 +409,60 @@ export default {
     handleSetLineChartData(type) {
       this.lineChartData = lineChartData[type]
     },
+    // 设置地图数据
+    setMapData(){
+      this.setMapChartData(this.dialogMapForm.set_visitors)
+      this.dialogMapVisible=false;
+    },
+    // 设置观看时间数据
+    setLineData(){
+      this.setLinChartData();
+      this.dialogLineVisible=false;
+    },
+    setLinChartData(){
+      let set_arr=[];
+        this.dialogLineForm.set_visitors.forEach((item)=>{
+        let set_value=[]
+        set_value[0]=item.time_slot
+        set_value[1]=item.set_value
+        set_arr.push(set_value);
+       })
+       this.changeLiveLineData=set_arr;
+    },
+    setMapChartData(data){
+      this.changeMapData=data.map((item)=>{
+          return {name:item.name,value:item.set_value}
+      })
+    },
     // api连接
     getMapData() {
       getMapData(this.query).then(response => {
-        this.mapData=response.data.data
-        console.log(this.mapData, 'this.mapDatamapDatamapData')
+        let data=response.data.data
+        this.mapData=data;
+        this.setMapChartData(data)
+        this.dialogMapForm.set_visitors=JSON.parse(JSON.stringify(data))
+        this.dialogMapForm.set_visitors.forEach((item)=>{
+          item['set_value']=item.value
+        });
       })
-    }
+    },
+    getLineData() {
+      getLineData(this.query).then(response => {
+        console.log('response', response)
+        let data=response.data.data
+        this.dialogLineForm.set_visitors=JSON.parse(JSON.stringify(data))
+        data.forEach((item,index)=>{
+          let origin=[]
+          let set_value=[]
+          origin[0]=item.time_slot
+          origin[1]=item.value
+          set_value[0]=item.time_slot
+          set_value[1]=item.set_value
+          this.liveLineData.push(origin);
+          this.changeLiveLineData.push(set_value);
+        })
+      })
+    },
   }
 }
 </script>
