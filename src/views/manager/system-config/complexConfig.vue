@@ -126,6 +126,50 @@
           <el-button  icon="el-icon-plus" size="mini" type="primary" @click="dialogRobotVisible=true">
                     选择
           </el-button>
+          <el-row>
+            <el-col :span="14">
+                <div class="title" style="background:#dfe6ec;padding-left:10px;">机器人</div>
+                <div class="content" >
+                      <el-table
+                      :data="selectRobots"
+                      border
+                      ref="multipleTable"
+                      max-height="250px"
+                      style="width: 100%;">
+                      <el-table-column
+                        prop="name"
+                        :label="typeText">
+                      </el-table-column>
+                      <el-table-column
+                        prop="description"
+                        label="描述">
+                      </el-table-column>
+                    </el-table>
+                </div>
+            </el-col>
+          </el-row>
+          <el-row style="margin-top:15px;">
+            <el-col :span="14">
+                <div class="title" style="background:#dfe6ec;padding-left:10px;">评论机器人</div>
+                <div class="content" >
+                      <el-table
+                      :data="selectCommentRobots"
+                      border
+                      ref="multipleTable"
+                      max-height="250px"
+                      style="width: 100%;">
+                      <el-table-column
+                        prop="name"
+                        :label="typeText">
+                      </el-table-column>
+                      <el-table-column
+                        prop="description"
+                        label="描述">
+                      </el-table-column>
+                    </el-table>
+                </div>
+            </el-col>
+          </el-row>
         </el-form-item>
         <el-form-item label="评论间隔时间">
           <el-col :span="14">
@@ -169,14 +213,14 @@
     </el-dialog>
     <!-- 组合选择 -->
       <el-dialog title="评论组合选择" :visible.sync="dialogRobotVisible">
-      <el-form ref="dataRobotForm" :rules="rulesRobot" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
-        <el-form-item label="机器人类别" prop="">
-          <MultipleSelect :type-arr="robotTypeArr" type-text="机器人" render-type="1" ></MultipleSelect>
-        </el-form-item>
-        <el-form-item label="评论组合" prop="">
-          <MultipleSelect :type-arr="robotTypeArrComment" type-text="评论机器人" render-type="2"></MultipleSelect>
-        </el-form-item>
-      </el-form>
+        <el-form ref="dataRobotForm" :rules="rulesRobot" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
+          <el-form-item label="机器人类别" prop="">
+            <MultipleSelect :type-arr="robotTypeArr" type-text="机器人" render-type="1" @handleEmit="selectRobot"></MultipleSelect>
+          </el-form-item>
+          <el-form-item label="评论组合" prop="">
+            <MultipleSelect :type-arr="robotTypeArrComment" type-text="评论机器人" render-type="2" @handleEmit="selectCommentRobot"></MultipleSelect>
+          </el-form-item>
+        </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogRobotVisible = false">
           取消
@@ -256,7 +300,9 @@ export default {
         // 
         rulesRobot:{
 
-        }
+        },
+        selectRobots:[],
+        selectCommentRobots:[]
     }
   },
   created(){
@@ -362,6 +408,14 @@ export default {
         this.total = response.data.total
       })
     },
+    // 选择机器人
+    selectRobot(data){
+      this.selectRobots=data
+    },
+    // 选择评论机器人
+    selectCommentRobot(data){
+      this.selectCommentRobots=data
+    }
   }
 
 }

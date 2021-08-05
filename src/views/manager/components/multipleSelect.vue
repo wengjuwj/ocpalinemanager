@@ -95,11 +95,16 @@ export default {
   methods:{
     handleSelectionChange(val){
       this.multipleSelection = val;
+      this.eventEmit(this.multipleSelection)
     },
     deleteSelected(row,index){
       this.$refs.multipleTable.toggleRowSelection(row,false);	
-      this.multipleSelection.splice(index, 1)
-    }
+      this.multipleSelection.splice(index, 1);
+      this.eventEmit(this.multipleSelection)
+    },
+    eventEmit(emitData){
+      this.$emit("handleEmit",emitData)
+    },
   }
 }
 </script>

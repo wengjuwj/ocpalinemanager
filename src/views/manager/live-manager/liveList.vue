@@ -217,6 +217,9 @@
         <el-button type="primary" @click="setRobotConfig">
           确定
         </el-button>
+        <el-button type="success" @click="viewCommentList">
+          查看评论列表
+        </el-button>
       </div>
     </el-dialog>
 
@@ -357,6 +360,15 @@ export default {
     handleSetRobotConfig(row){
       this.dialogRobotForm.id=row.id;
       this.dialogRobotVisible=true
+    },
+    // 查看自动评论列表
+    viewCommentList(){
+       this.$router.push(
+        {
+          path:'/autocomment',
+          
+        }
+      )
     },
     // 新增
     createData(){

@@ -75,6 +75,13 @@ export const constantRoutes = [
         meta: { title: '数据分析', icon: 'el-icon-s-operation' },
         hidden:true
       },
+      {
+        path: 'autocomment',
+        component: () => import('@/views/manager/auto-comment/autoComment'),
+        name: 'autocomment',
+        meta: { title: '自动评论列表', icon: 'user', noCache: true },
+        hidden:true
+      }
     ]
   },
   {
@@ -153,20 +160,6 @@ export const constantRoutes = [
       }
     ]
   },
-  {
-    path: '/autocomment',
-    component: Layout,
-    redirect: '/autocomment',
-    hidden: true,
-    children: [
-      {
-        path: 'autocomment',
-        component: () => import('@/views/manager/auto-comment/autoComment'),
-        name: 'autocomment',
-        meta: { title: '自动评论列表', icon: 'user', noCache: true }
-      }
-    ]
-  }
 ]
 
 /**
