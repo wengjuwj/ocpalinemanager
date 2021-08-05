@@ -131,6 +131,10 @@
              <el-button type="primary" icon="el-icon-s-data" circle @click="handleAnalysis(row)">
              </el-button>
           </el-tooltip>
+          <el-tooltip content="访问配置" placement="top" effect="light">
+             <el-button type="warning" icon="el-icon-s-opportunity" circle @click="handleSetVisitors(row)">
+             </el-button>
+          </el-tooltip>
           <el-tooltip content="机器人配置" placement="top" effect="light">
              <el-button  icon="el-icon-chat-line-square" circle @click="handleSetRobotConfig(row)">
              </el-button>
@@ -222,6 +226,25 @@
         </el-button>
       </div>
     </el-dialog>
+    <!-- 当前访问量设置 -->
+    <el-dialog title="访问设置" :visible.sync="dialogVisitorsVisible">
+      <el-form ref="visitorsForm" :rules="rulesVisitors" :model="dialogVisitorsForm" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="当前访问量" prop="visitors_num">
+          <el-input v-model="dialogVisitorsForm.visitors_num" />
+        </el-form-item>
+        <el-form-item label="当前访问倍数" prop="multiple">
+          <el-input v-model="dialogVisitorsForm.multiple" />
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisitorsVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="dialogVisitorsVisible = false">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
 
   </div>
 </template>
@@ -237,9 +260,9 @@ export default {
     return{
        tableData: [],
         // 新建弹框
-        dialogFormVisible:false,
-        dialogStatus: '',
-        textMap: {
+       dialogFormVisible:false,
+       dialogStatus: '',
+       textMap: {
           update: '编辑',
           create: '新建'
        },
@@ -261,7 +284,6 @@ export default {
         visitors_multiple:'',
         visitors_setting:'',
         url:''
-       
       },
       test:[1,2,3,4],
       multipleSelection:[],
@@ -280,7 +302,18 @@ export default {
       dialogRobotForm:{
         id:undefined,
         robot_config:''
-      }
+      },
+      // 访问设置弹框
+      dialogVisitorsVisible:false,
+      rulesVisitors:{
+        visitors_num: [{ required: true, message: '请填写当前访问量', trigger: 'blur' }],
+        multiple:[{ required: true, message: '请填写当前访问倍数', trigger: 'blur' }],
+      },
+      dialogVisitorsForm:{
+        id:undefined,
+        visitors_num:'',
+        multiple:''
+      },
     }
   },
   created(){
@@ -360,6 +393,11 @@ export default {
     handleSetRobotConfig(row){
       this.dialogRobotForm.id=row.id;
       this.dialogRobotVisible=true
+    },
+    // 访问设置
+    handleSetVisitors(row){
+      this.dialogVisitorsForm.id=row.id;
+      this.dialogVisitorsVisible=true
     },
     // 查看自动评论列表
     viewCommentList(){

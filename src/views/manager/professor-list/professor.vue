@@ -56,6 +56,15 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="professor_place"
+        label="医院"
+        align="center" 
+        >
+        <template slot-scope="{row}">
+          <span>{{ row.professor_place}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="professor_avatar"
         label="头像"
         align="center"
@@ -106,7 +115,7 @@
              <uploadImg></uploadImg>
           </el-col>
         </el-form-item>
-        <el-form-item label="分类">
+        <el-form-item label="医院">
             <el-col :span="24">
                 <el-input v-model="temp.professor_classification" />
           </el-col>

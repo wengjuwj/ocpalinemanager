@@ -122,7 +122,7 @@
              <el-input v-model="temp.robots_group_name" />
           </el-col>
         </el-form-item>
-        <el-form-item label="评论组合">
+        <el-form-item label="评论组合" prop="select_robots">
           <el-button  icon="el-icon-plus" size="mini" type="primary" @click="dialogRobotVisible=true">
                     选择
           </el-button>
@@ -131,14 +131,14 @@
                 <div class="title" style="background:#dfe6ec;padding-left:10px;">机器人</div>
                 <div class="content" >
                       <el-table
-                      :data="selectRobots"
+                      :data="temp.select_robots"
                       border
                       ref="multipleTable"
                       max-height="250px"
                       style="width: 100%;">
                       <el-table-column
                         prop="name"
-                        :label="typeText">
+                        label="机器人">
                       </el-table-column>
                       <el-table-column
                         prop="description"
@@ -153,14 +153,14 @@
                 <div class="title" style="background:#dfe6ec;padding-left:10px;">评论机器人</div>
                 <div class="content" >
                       <el-table
-                      :data="selectCommentRobots"
+                      :data="temp.select_comment_robots"
                       border
                       ref="multipleTable"
                       max-height="250px"
                       style="width: 100%;">
                       <el-table-column
                         prop="name"
-                        :label="typeText">
+                        label="评论机器人">
                       </el-table-column>
                       <el-table-column
                         prop="description"
@@ -171,7 +171,7 @@
             </el-col>
           </el-row>
         </el-form-item>
-        <el-form-item label="评论间隔时间">
+        <el-form-item label="评论间隔时间" prop="comments_space_time">
           <el-col :span="14">
               <el-input type="number" v-model="temp.comments_space_time" />
           </el-col>
@@ -183,9 +183,9 @@
             </el-radio-group>
           </el-col>
         </el-form-item>
-        <el-form-item label="加赞数量">
+        <el-form-item label="加赞数量区间" prop="thumbs_space_from">
           <el-col :span="6">
-              <el-input type="number" />
+              <el-input type="number" v-model="temp.thumbs_space_from"/>
           </el-col>
            <el-col :span="2">
               <div style="text-align:center">
@@ -193,17 +193,17 @@
               </div>
           </el-col>
           <el-col :span="6">
-            <el-input type="number"/>
+            <el-input type="number" v-model="temp.thumbs_space_to"/>
           </el-col>
         </el-form-item>
-        <el-form-item label="组合描述">
+        <el-form-item label="组合描述" prop="robots_group_description">
           <el-col :span="14">
              <el-input v-model="temp.robots_group_description" />
           </el-col>         
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">
+        <el-button @click="handelCreateCancel">
           取消
         </el-button>
         <el-button type="primary" @click="dialogStatus==='create'?createData():updateData()">
@@ -212,17 +212,17 @@
       </div>
     </el-dialog>
     <!-- 组合选择 -->
-      <el-dialog title="评论组合选择" :visible.sync="dialogRobotVisible">
-        <el-form ref="dataRobotForm" :rules="rulesRobot" :model="temp" label-position="left" label-width="120px" style="margin-left:50px;">
+    <el-dialog title="评论组合选择" :visible.sync="dialogRobotVisible">
+        <el-form ref="dataRobotForm" label-position="left" label-width="120px" style="margin-left:50px;">
           <el-form-item label="机器人类别" prop="">
-            <MultipleSelect :type-arr="robotTypeArr" type-text="机器人" render-type="1" @handleEmit="selectRobot"></MultipleSelect>
+            <MultipleSelect :type-arr="robotTypeArr" type-text="机器人" render-type="1" @handleEmit="selectRobot" v-if="dialogRobotVisible"></MultipleSelect>
           </el-form-item>
           <el-form-item label="评论组合" prop="">
-            <MultipleSelect :type-arr="robotTypeArrComment" type-text="评论机器人" render-type="2" @handleEmit="selectCommentRobot"></MultipleSelect>
+            <MultipleSelect :type-arr="robotTypeArrComment" type-text="评论机器人" render-type="2" @handleEmit="selectCommentRobot" v-if="dialogRobotVisible"></MultipleSelect>
           </el-form-item>
         </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogRobotVisible = false">
+        <el-button @click="handleSelectCancel">
           取消
         </el-button>
         <el-button type="primary" @click="dialogRobotVisible = false">
@@ -242,6 +242,22 @@ export default {
   name:'thumbs',
   components:{Pagination,MultipleSelect},
   data(){
+    // 校验评论组合不为空
+    const validateRobotGroups=(rule,value,callback)=>{
+        if(this.temp.select_robots.length==0){
+          callback(new Error('请选择机器人'));
+        }else if(this.temp.select_comment_robots.length==0){
+           callback(new Error('请选择评论机器人'));
+        }
+    };
+    // 校验加赞数量区间
+    const validateThumbsSpace=(rule,value,callback)=>{
+      if(!this.temp.thumbs_space_from){
+          callback(new Error('填写加赞数量区间From'));
+        }else if(!this.temp.thumbs_space_to){
+           callback(new Error('填写加赞数量区间To'));
+        }
+    }
     return{
        tableData: [
         {
@@ -266,17 +282,20 @@ export default {
       //  
        rules: {
         robots_group_name: [{ required: true, message: '请填写组合名称', trigger: 'blur' }],
+        comments_space_time: [{ required: true, message: '请填写评论间隔时间', trigger: 'blur' }],
+        select_robots:[{required: true,validator: validateRobotGroups, trigger: 'blur'}],
+        thumbs_space_from:[{required: true,validator: validateThumbsSpace, trigger: 'blur'}],
       },
       temp: {
         id: undefined,
         robots_group_name: '',
-        thumbs_group_name: '',
-        thumbs_space_time: '',
-        thumbs_time_unit:1,
-        comments_group_name: '',
         comments_space_time: '',
         comments_time_unit:1,
+        thumbs_space_from:'',
+        thumbs_space_to:'',
         robots_group_description: '',
+        select_robots:[],
+        select_comment_robots:[],
       },
       test:[1,2,3,4],
       multipleSelection:[],
@@ -301,8 +320,6 @@ export default {
         rulesRobot:{
 
         },
-        selectRobots:[],
-        selectCommentRobots:[]
     }
   },
   created(){
@@ -324,13 +341,13 @@ export default {
       this.temp = {
         id: undefined,
         robots_group_name: '',
-        thumbs_group_name: '',
-        thumbs_space_time: '',
-        thumbs_time_unit:1,
-        comments_group_name: '',
         comments_space_time: '',
         comments_time_unit:1,
+        thumbs_space_from:'',
+        thumbs_space_to:'',
         robots_group_description: '',
+        select_robots:[],
+        select_comment_robots:[],
       }
     },
     // 新建点赞机器人
@@ -410,11 +427,20 @@ export default {
     },
     // 选择机器人
     selectRobot(data){
-      this.selectRobots=data
+      this.temp.select_robots=data
     },
     // 选择评论机器人
     selectCommentRobot(data){
-      this.selectCommentRobots=data
+      this.temp.select_comment_robots=data
+    },
+    // 选择机器人组合弹框-取消
+    handleSelectCancel(){
+      this.dialogRobotVisible = false;
+      this.temp.select_robots=[],
+      this.temp.select_comment_robots=[]
+    },
+    handelCreateCancel(){
+      this.dialogFormVisible = false
     }
   }
 
