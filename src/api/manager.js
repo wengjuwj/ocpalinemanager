@@ -2,6 +2,7 @@ import request from '@/utils/request'
 
 // 获取直播间列表
 export function getLiveList(query) {
+  console.log('走到列表', '')
   return request({
     url: '/live/liveList',
     method: 'get',
@@ -9,9 +10,9 @@ export function getLiveList(query) {
   })
 }
 // 创建直播间
-export function createLive(data){
+export function createLive(data) {
   return request({
-    url:'/live/liveList/create',
+    url: '/live/liveList/create',
     method: 'post',
     data
   })
@@ -33,9 +34,9 @@ export function getClassificationList(query) {
   })
 }
 // 创建分类
-export function createClassification(data){
+export function createClassification(data) {
   return request({
-    url:'/classification/list/create',
+    url: '/classification/list/create',
     method: 'post',
     data
   })
@@ -57,9 +58,9 @@ export function getThumbsList(query) {
   })
 }
 // 创建点赞机器人
-export function createThumbs(data){
+export function createThumbs(data) {
   return request({
-    url:'/thumbs/list/create',
+    url: '/thumbs/list/create',
     method: 'post',
     data
   })
@@ -81,9 +82,9 @@ export function getCommentRobotsList(query) {
   })
 }
 // 创建评论机器人
-export function createCommentRobots(data){
+export function createCommentRobots(data) {
   return request({
-    url:'/commentrobots/list/create',
+    url: '/commentrobots/list/create',
     method: 'post',
     data
   })
@@ -105,9 +106,9 @@ export function getRobotGroupList(query) {
   })
 }
 // 创建评论机器人
-export function createRobotGroup(data){
+export function createRobotGroup(data) {
   return request({
-    url:'/robotgroup/list/create',
+    url: '/robotgroup/list/create',
     method: 'post',
     data
   })
@@ -129,9 +130,9 @@ export function getProfessorsList(query) {
   })
 }
 // 创建专家信息
-export function createProfessor(data){
+export function createProfessor(data) {
   return request({
-    url:'/professors/list/create',
+    url: '/professors/list/create',
     method: 'post',
     data
   })
@@ -153,17 +154,17 @@ export function geAutoCommentList(query) {
   })
 }
 // 创建评论
-export function createAutoComment(data){
+export function createAutoComment(data) {
   return request({
-    url:'/autocomment/list/create',
+    url: '/autocomment/list/create',
     method: 'post',
     data
   })
 }
 // 评论发布
-export function publishComment(data){
+export function publishComment(data) {
   return request({
-    url:'/autocomment/list/publish',
+    url: '/autocomment/list/publish',
     method: 'post',
     data
   })

@@ -26,7 +26,9 @@ for(let i=0;i<count;i++){
       {
         id: i+1,
         timestamp: +Mock.Random.date('T'),
-        name:liveArr[getRandom()],
+        name:liveArr[Mock.mock({
+          "number|0-4": 1
+        }).number],
         url:"xxx.xxx.xxx",
         user_name:"专家"+(i+1),
         classification:"分类"+(i+1),
@@ -75,7 +77,9 @@ for(let i=0;i<count;i++){
       {
         id: i+1,
         name:mockLevel(i)==1?("评论机器人1"+i):("评论机器人2"+i),
-        comment_text:commentArr[getRandom()],
+        comment_text:commentArr[Mock.mock({
+          "number|0-4": 1
+        }).number],
         description:mockLevel(i)==1?("评论机器人1"+i+"的描述"):("评论机器人2"+i+"的描述"),
         classification:0
       }
@@ -458,13 +462,4 @@ module.exports = [
 function mockLevel(index){
  let test=index%3==0?1:2;
  return test;
-}
-function getRandom(){
- 
-  let random=0;
-  let temp=Math.random()*10;
-  if(temp<5){
-    random=parseInt(temp)
-  }
-  return random
 }
