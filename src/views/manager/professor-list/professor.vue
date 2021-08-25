@@ -3,7 +3,7 @@
     <div class="filter-container">
           <el-input placeholder="请输入专家名称" style="width:200px" class="filter-item" v-model="listQuery.professor_name"/>
           <el-input placeholder="职称" style="width:200px" class="filter-item" v-model="listQuery.professor_title"/>
-          <el-input placeholder="专家分类" style="width:200px" class="filter-item" v-model="listQuery.professor_classification"/>
+          <!-- <el-input placeholder="专家分类" style="width:200px" class="filter-item" v-model="listQuery.professor_classification"/> -->
           <el-button  class="filter-item" type="primary" icon="el-icon-search" @click="search">
             搜索
           </el-button>

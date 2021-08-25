@@ -56,6 +56,13 @@
           </el-row>
           <el-row>
             <el-col :span="24">
+               <el-form-item label="直播标签" prop="tags">
+                  <el-input v-model="form.tags" />
+                </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="24">
                <el-form-item label="直播封面" prop="bg_image">
                   <uploadImg></uploadImg>
               </el-form-item>
@@ -205,7 +212,8 @@ export default {
         classification:'',
         bg_image:'',
         content:'',
-        relation_videoes:''
+        relation_videoes:'',
+        tags:''
       },
       rules:{
         name:[{ required: true, message: '直播名称不能为空', trigger: 'change' }],
@@ -213,6 +221,7 @@ export default {
         telecase_time:[{ required: true, message: '请选择直播时间', trigger: 'change' }],
         bg_image:[{ required: true, message: '请上传直播封面', trigger: 'change' }],
         classification:[{ required: true, message: '请选择直播分类', trigger: 'change' }],
+        tags:[{ required: true, message: '请输入直播标签', trigger: 'change' }],
       },
       // 选择视频弹框
       relationData:[],
