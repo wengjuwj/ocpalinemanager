@@ -63,10 +63,11 @@
                 v-for="tag in form.tags"
                 :key="tag.name"
                 closable
-                :type="tag.type">
-                {{tag.name}}
+                :type="tag.type"
+              >
+                {{ tag.name }}
               </el-tag>
-              <el-button type="primary" icon="el-icon-plus" @click="tagsVisible=true"></el-button>
+              <el-button type="primary" icon="el-icon-plus" @click="tagsVisible=true" />
             </div>
           </el-form-item>
         </el-col>
@@ -210,7 +211,7 @@
     <el-dialog title="新增标签" :visible.sync="tagsVisible">
       <el-form ref="visitorsForm" :rules="rulesTags" :model="dialogTagsForm" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
         <el-form-item label="标签名" prop="tag">
-          <el-input v-model="dialogTagsForm.tag"/>
+          <el-input v-model="dialogTagsForm.tag" />
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -262,8 +263,8 @@ export default {
         classification: [{ required: true, message: '请选择直播分类', trigger: 'change' }],
         tags: [{ required: true, message: '请输入直播标签', trigger: 'change' }]
       },
-      rulesTags:{
-        tag:[{ required: true, message: '标签名不能为空', trigger: 'change' }],
+      rulesTags: {
+        tag: [{ required: true, message: '标签名不能为空', trigger: 'change' }]
       },
       // 选择视频弹框
       relationData: [],
@@ -273,10 +274,10 @@ export default {
       professorsData: [],
       dialogProfessorsVisible: false,
       multipleProfessors: [],
-      //新增标签弹框
-      tagsVisible:false,
-      dialogTagsForm:{
-        tag:""
+      // 新增标签弹框
+      tagsVisible: false,
+      dialogTagsForm: {
+        tag: ''
       }
     }
   },

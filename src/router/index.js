@@ -52,35 +52,35 @@ export const constantRoutes = [
         path: 'livelist',
         component: () => import('@/views/manager/live-manager/liveList'),
         name: 'livelist',
-        meta: { title: '直播列表', icon: 'el-icon-s-unfold' },
+        meta: { title: '直播列表', icon: 'el-icon-s-unfold' }
       },
       {
         path: 'live',
         component: () => import('@/views/manager/live-manager/addLive'),
         name: 'live',
         meta: { title: '新建直播间', icon: 'el-icon-circle-plus-outline' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'comment',
         component: () => import('@/views/manager/audits-management/comment'),
         name: 'comment',
         meta: { title: '评论审核', icon: 'el-icon-s-operation' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'analysis',
         component: () => import('@/views/manager/data-analysis/index'),
         name: 'analysis',
         meta: { title: '数据分析', icon: 'el-icon-s-operation' },
-        hidden:true
+        hidden: true
       },
       {
         path: 'autocomment',
         component: () => import('@/views/manager/auto-comment/autoComment'),
         name: 'autocomment',
         meta: { title: '自动评论列表', icon: 'user', noCache: true },
-        hidden:true
+        hidden: true
       }
     ]
   },
@@ -129,7 +129,7 @@ export const constantRoutes = [
         component: () => import('@/views/manager/system-config/complexConfig'),
         name: 'complexconfig',
         meta: { title: '组合配置', icon: 'el-icon-s-operation' }
-      },
+      }
     ]
   },
   {
@@ -159,7 +159,7 @@ export const constantRoutes = [
         meta: { title: '专家列表', icon: 'user', noCache: true }
       }
     ]
-  },
+  }
 ]
 
 /**
@@ -176,7 +176,7 @@ export const asyncRoutes = [
       title: 'Error Pages',
       icon: '404'
     },
-    hidden:true,
+    hidden: true,
     children: [
       {
         path: '401',
