@@ -5,6 +5,7 @@
   "author": "",
   "scripts": {
     "dev": "vue-cli-service serve",
+    "dev:mock": "vue-cli-service serve --mode mocking",
     "lint": "eslint --ext .js,.vue src",
     "build:prod": "vue-cli-service build",
     "build:stage": "vue-cli-service build --mode staging",

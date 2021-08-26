@@ -5,7 +5,6 @@ const path = require('path')
 const Mock = require('mockjs')
 
 const mockDir = path.join(process.cwd(), 'mock')
-
 function registerRoutes(app) {
   let mockLastIndex
   const { mocks } = require('./index.js')
@@ -38,6 +37,7 @@ const responseFake = (url, type, respond) => {
     type: type || 'get',
     response(req, res) {
       console.log('request invoke:' + req.path)
+      console.log(process.env.VUE_APP_BASE_API,"mockDir")
       res.json(Mock.mock(respond instanceof Function ? respond(req, res) : respond))
     }
   }

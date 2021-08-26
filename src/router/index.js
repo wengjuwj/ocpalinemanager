@@ -150,7 +150,7 @@ export const constantRoutes = [
     path: '/professors',
     component: Layout,
     redirect: '/professors',
-    hidden: false,
+    hidden: true,
     children: [
       {
         path: 'professors',

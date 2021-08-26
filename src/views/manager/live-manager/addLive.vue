@@ -9,7 +9,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-      <el-row>
+      <!-- <el-row>
         <el-col :span="24">
           <el-form-item label="专家名称" prop="professors">
             <el-button icon="el-icon-plus" size="mini" type="primary" @click="dialogProfessorsVisible=true">
@@ -37,7 +37,7 @@
             </div>
           </el-form-item>
         </el-col>
-      </el-row>
+      </el-row> -->
       <el-row>
         <el-col :span="24">
           <el-form-item label="直播时间" prop="telecase_time">
@@ -58,7 +58,16 @@
       <el-row>
         <el-col :span="24">
           <el-form-item label="直播标签" prop="tags">
-            <el-input v-model="form.tags" />
+            <div class="tags-wrap">
+              <el-tag
+                v-for="tag in form.tags"
+                :key="tag.name"
+                closable
+                :type="tag.type">
+                {{tag.name}}
+              </el-tag>
+              <el-button type="primary" icon="el-icon-plus" @click="tagsVisible=true"></el-button>
+            </div>
           </el-form-item>
         </el-col>
       </el-row>
@@ -143,10 +152,10 @@
           prop="name"
           label="直播名称"
         />
-        <el-table-column
+        <!-- <el-table-column
           prop="user_name"
           label="专家"
-        />
+        /> -->
       </el-table>
       <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">
@@ -197,7 +206,22 @@
         </el-button>
       </div>
     </el-dialog>
-
+    <!-- 新增标签弹框 -->
+    <el-dialog title="新增标签" :visible.sync="tagsVisible">
+      <el-form ref="visitorsForm" :rules="rulesTags" :model="dialogTagsForm" label-position="left" label-width="120px" style="width: 400px; margin-left:50px;">
+        <el-form-item label="标签名" prop="tag">
+          <el-input v-model="dialogTagsForm.tag"/>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="tagsVisible = false">
+          取消
+        </el-button>
+        <el-button type="primary" @click="tagsVisible = false">
+          确定
+        </el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -216,21 +240,30 @@ export default {
     return {
       form: {
         name: '',
-        professors: '',
+        // professors: '',
         telecase_time: '',
         classification: '',
         bg_image: '',
         content: '',
         relation_videoes: '',
-        tags: ''
+        tags: [
+          { name: '标签一', type: '' },
+          { name: '标签二', type: 'success' },
+          { name: '标签三', type: 'info' },
+          { name: '标签四', type: 'warning' },
+          { name: '标签五', type: 'danger' }
+        ]
       },
       rules: {
         name: [{ required: true, message: '直播名称不能为空', trigger: 'change' }],
-        professors: [{ required: true, message: '专家名称不能为空', trigger: 'change' }],
+        // professors: [{ required: true, message: '专家名称不能为空', trigger: 'change' }],
         telecase_time: [{ required: true, message: '请选择直播时间', trigger: 'change' }],
         bg_image: [{ required: true, message: '请上传直播封面', trigger: 'change' }],
         classification: [{ required: true, message: '请选择直播分类', trigger: 'change' }],
         tags: [{ required: true, message: '请输入直播标签', trigger: 'change' }]
+      },
+      rulesTags:{
+        tag:[{ required: true, message: '标签名不能为空', trigger: 'change' }],
       },
       // 选择视频弹框
       relationData: [],
@@ -239,7 +272,12 @@ export default {
       // 选择专家弹框
       professorsData: [],
       dialogProfessorsVisible: false,
-      multipleProfessors: []
+      multipleProfessors: [],
+      //新增标签弹框
+      tagsVisible:false,
+      dialogTagsForm:{
+        tag:""
+      }
     }
   },
   created() {
@@ -320,5 +358,11 @@ export default {
 }
 .relation_class{
   margin-bottom: 15px;
+}
+.tags-wrap .el-tag+.el-tag{
+    margin-left: 10px;
+}
+.tags-wrap .el-button{
+  margin-left: 10px;
 }
 </style>
